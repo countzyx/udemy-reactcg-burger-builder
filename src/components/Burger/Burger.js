@@ -1,3 +1,4 @@
+// @flow
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import styles from './Burger.module.css';
