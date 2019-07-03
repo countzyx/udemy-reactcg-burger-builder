@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './BurgerIngredient.module.css';
 
 type Props = {
-  ingredientType: String,
+  ingredientType: string,
 };
 
 const burgerIngredient = (props: Props) => {
