@@ -24,6 +24,7 @@
   "plugins": ["react", "jsx-a11y", "import", "flowtype"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prefer-stateless-function": "warn",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/no-noninteractive-element-interactions": "warn"
   }
