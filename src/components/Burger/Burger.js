@@ -1,6 +1,4 @@
-/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import styles from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
@@ -16,14 +14,20 @@ type Props = {
 
 const burger = (props: Props) => {
   const { ingredients } = props;
-  const ingredientArray = Object.keys(ingredients).map(name => [...Array(ingredients[name])].map((_, i) => (
-    <BurgerIngredient key={name + i} ingredientType={name} />
-  )));
+  const ingredientsArray = Object.keys(ingredients)
+    .map(name => [...Array(ingredients[name])].map((_, i) => (
+      <BurgerIngredient key={name + i} ingredientType={name} />
+    )))
+    .reduce((agg, el) => agg.concat(el), []);
+
+  if (ingredientsArray.length === 0) {
+    ingredientsArray.push(<p>Please start adding ingredients!</p>);
+  }
 
   return (
     <div className={styles.Burger}>
       <BurgerIngredient ingredientType="bread-top" />
-      {ingredientArray}
+      {ingredientsArray}
       <BurgerIngredient ingredientType="bread-bottom" />
     </div>
   );
