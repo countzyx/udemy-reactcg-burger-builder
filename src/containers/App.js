@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Styles from './App.module.css';
+import Layout from '../components/Layout/Layout';
 
 type Props = {};
 
@@ -8,7 +9,9 @@ type Props = {};
 class App extends Component<Props> {
   render = () => (
     <div className={Styles.App}>
-      <h1>Burger Builder</h1>
+      <Layout>
+        <p>Test</p>
+      </Layout>
     </div>
   );
 }
