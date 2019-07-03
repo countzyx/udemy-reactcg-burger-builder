@@ -1,16 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import Styles from './App.module.css';
+import styles from './App.module.css';
 import Layout from '../components/Layout/Layout';
+import BurgerBuilder from './BurgerBuilder/BurgerBuilder';
 
 type Props = {};
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component<Props> {
   render = () => (
-    <div className={Styles.App}>
+    <div className={styles.App}>
       <Layout>
-        <p>Test</p>
+        <BurgerBuilder />
       </Layout>
     </div>
   );
