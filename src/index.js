@@ -5,7 +5,7 @@ import './index.css';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 
-const root = document.getElementById('root');
+const root: ?Element = document.getElementById('root');
 if (root) {
   ReactDOM.render(<App />, root);
 
