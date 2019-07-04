@@ -6,6 +6,8 @@ import BuildControl from './BuildControl/BuildControl';
 type Props = {
   ingredientAdded?: (ingredientType: string) => void,
   ingredientRemoved?: (ingredientType: string) => void,
+  disableRemoveIngredient: { [ingredient: string]: boolean },
+  totalPrice: number,
 };
 
 const controls = [
@@ -16,18 +18,25 @@ const controls = [
 ];
 
 const buildControls = (props: Props) => {
-  const { ingredientAdded, ingredientRemoved } = props;
+  const {
+    ingredientAdded, ingredientRemoved, disableRemoveIngredient, totalPrice,
+  } = props;
 
   return (
     <div className={styles.BuildControls}>
+      <p>
+        Total Price: $
+        <strong>{totalPrice.toFixed(2)}</strong>
+      </p>
       {controls.map(controlProps => (
         <BuildControl
+          key={controlProps.label}
+          {...controlProps}
           added={ingredientAdded ? () => ingredientAdded(controlProps.ingredientType) : () => {}}
           removed={
             ingredientRemoved ? () => ingredientRemoved(controlProps.ingredientType) : () => {}
           }
-          key={controlProps.label}
-          {...controlProps}
+          disabled={disableRemoveIngredient[controlProps.ingredientType]}
         />
       ))}
     </div>
