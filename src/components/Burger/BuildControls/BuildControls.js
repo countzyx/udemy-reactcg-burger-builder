@@ -3,7 +3,10 @@ import React from 'react';
 import styles from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
 
-type Props = {};
+type Props = {
+  ingredientAdded?: (ingredientType: string) => void,
+  ingredientRemoved?: (ingredientType: string) => void,
+};
 
 const controls = [
   { label: 'Bacon', ingredientType: 'bacon' },
@@ -12,12 +15,28 @@ const controls = [
   { label: 'Salad', ingredientType: 'salad' },
 ];
 
-const buildControls = (props: Props) => (
-  <div className={styles.BuildControls}>
-    {controls.map(controlProps => (
-      <BuildControl key={controlProps.label} {...controlProps} />
-    ))}
-  </div>
-);
+const buildControls = (props: Props) => {
+  const { ingredientAdded, ingredientRemoved } = props;
+
+  return (
+    <div className={styles.BuildControls}>
+      {controls.map(controlProps => (
+        <BuildControl
+          added={ingredientAdded ? () => ingredientAdded(controlProps.ingredientType) : () => {}}
+          removed={
+            ingredientRemoved ? () => ingredientRemoved(controlProps.ingredientType) : () => {}
+          }
+          key={controlProps.label}
+          {...controlProps}
+        />
+      ))}
+    </div>
+  );
+};
+
+buildControls.defaultProps = {
+  ingredientAdded: null,
+  ingredientRemoved: null,
+};
 
 export default buildControls;
