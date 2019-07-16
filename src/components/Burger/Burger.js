@@ -22,7 +22,7 @@ const burger = (props: Props) => {
     .reduce((agg, el) => agg.concat(el), []);
 
   if (ingredientsArray.length === 0) {
-    ingredientsArray.push(<p>Please start adding ingredients!</p>);
+    ingredientsArray.push(<p key="add-ingredients">Please start adding ingredients!</p>);
   }
 
   return (
