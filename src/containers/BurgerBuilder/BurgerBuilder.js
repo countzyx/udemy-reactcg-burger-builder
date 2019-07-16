@@ -4,13 +4,15 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 type Props = {};
 
+type Ingredients = {
+  bacon: number,
+  cheese: number,
+  meat: number,
+  salad: number,
+};
+
 type State = {
-  ingredients: {
-    bacon: number,
-    cheese: number,
-    meat: number,
-    salad: number,
-  },
+  ingredients: Ingredients,
   purchaseable: boolean,
   totalPrice: number,
 };
@@ -34,11 +36,9 @@ class BurgerBuilder extends Component<Props, State> {
     purchaseable: false,
   };
 
-  updatePurchaseState = () => {
-    const { ingredients } = this.state;
-    const copyIngredients = { ...ingredients };
-    const sum = Object.keys(copyIngredients).reduce(
-      (agg: number, k: string) => agg + copyIngredients[k],
+  updatePurchaseState = (ingredients: Ingredients) => {
+    const sum = Object.keys(ingredients).reduce(
+      (agg: number, k: string) => agg + ingredients[k],
       0,
     );
     this.setState({ purchaseable: sum > 0 });
@@ -53,7 +53,7 @@ class BurgerBuilder extends Component<Props, State> {
     const priceAddition = INGREDIENT_PRICES[ingredientType];
     const newTotalPrice = totalPrice + priceAddition;
     this.setState({ ingredients: updatedIngredients, totalPrice: newTotalPrice });
-    this.updatePurchaseState();
+    this.updatePurchaseState(updatedIngredients);
   };
 
   removeIngredientHandler = (ingredientType: string) => {
@@ -69,7 +69,7 @@ class BurgerBuilder extends Component<Props, State> {
     const priceDeduction = INGREDIENT_PRICES[ingredientType];
     const newTotalPrice = totalPrice - priceDeduction;
     this.setState({ ingredients: updatedIngredients, totalPrice: newTotalPrice });
-    this.updatePurchaseState();
+    this.updatePurchaseState(updatedIngredients);
   };
 
   render = () => {
