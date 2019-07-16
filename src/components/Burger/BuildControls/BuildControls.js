@@ -4,9 +4,10 @@ import styles from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
 
 type Props = {
+  disableRemoveIngredient: { [ingredient: string]: boolean },
   ingredientAdded?: (ingredientType: string) => void,
   ingredientRemoved?: (ingredientType: string) => void,
-  disableRemoveIngredient: { [ingredient: string]: boolean },
+  purchaseable: boolean,
   totalPrice: number,
 };
 
@@ -19,7 +20,11 @@ const controls = [
 
 const buildControls = (props: Props) => {
   const {
-    ingredientAdded, ingredientRemoved, disableRemoveIngredient, totalPrice,
+    disableRemoveIngredient,
+    ingredientAdded,
+    ingredientRemoved,
+    purchaseable,
+    totalPrice,
   } = props;
 
   return (
@@ -39,6 +44,9 @@ const buildControls = (props: Props) => {
           disabled={disableRemoveIngredient[controlProps.ingredientType]}
         />
       ))}
+      <button className={styles.OrderButton} disabled={!purchaseable} type="button">
+        ORDER NOW
+      </button>
     </div>
   );
 };
