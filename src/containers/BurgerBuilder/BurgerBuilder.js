@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
-import type Ingredients from '../../types/TypeIngredients';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import type { Ingredients } from '../../types/TypeIngredients';
 
 type Props = {};
 
@@ -74,7 +75,9 @@ class BurgerBuilder extends Component<Props, State> {
     );
     return (
       <React.Fragment>
-        <Modal />
+        <Modal>
+          <OrderSummary ingredients={ingredients} />
+        </Modal>
         <Burger ingredients={ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
