@@ -1,7 +1,8 @@
 // @flow
 import * as React from 'react';
-import type { Ingredients } from '../../../types/TypeIngredients';
+import styles from './OrderSummary.module.css';
 import Button from '../../UI/Button/Button';
+import type { Ingredients } from '../../../types/TypeIngredients';
 
 type Props = {
   ingredients: Ingredients,
@@ -19,7 +20,7 @@ const orderSummary = (props: Props) => {
     </li>
   ));
   return (
-    <React.Fragment>
+    <div className={styles.OrderSummary}>
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientSummary}</ul>
@@ -30,7 +31,7 @@ const orderSummary = (props: Props) => {
       <Button buttonType="Success" clicked={purchaseContinued}>
         CONTINUE
       </Button>
-    </React.Fragment>
+    </div>
   );
 };
 
