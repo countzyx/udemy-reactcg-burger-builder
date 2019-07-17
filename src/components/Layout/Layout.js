@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
 import styles from './Layout.module.css';
 
@@ -13,6 +14,7 @@ const layout = (props: Props) => {
   return (
     <React.Fragment>
       <Toolbar />
+      <SideDrawer />
       <main className={styles.Content}>{children}</main>
     </React.Fragment>
   );
