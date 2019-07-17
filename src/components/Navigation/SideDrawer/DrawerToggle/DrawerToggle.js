@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 // @flow
 import * as React from 'react';
-// import styles from './DrawerToggle.module.css';
+import styles from './DrawerToggle.module.css';
 
 type Props = {
   clicked?: ?() => void,
@@ -11,8 +11,10 @@ type Props = {
 const drawerToggle = (props: Props) => {
   const { clicked } = props;
   return (
-    <div onClick={clicked} role="menu">
-      MENU
+    <div className={styles.DrawerToggle} onClick={clicked} role="menu">
+      <div />
+      <div />
+      <div />
     </div>
   );
 };
