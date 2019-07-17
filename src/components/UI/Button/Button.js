@@ -13,7 +13,7 @@ const button = (props: Props) => {
   const { buttonType, children, clicked } = props;
   return (
     <button
-      className={[styles.Button, styles[buttonType]].join('')}
+      className={[styles.Button, styles[buttonType]].join(' ')}
       onClick={clicked}
       type="button"
     >
