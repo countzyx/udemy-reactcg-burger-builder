@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import Logo from '../../Logo/Logo';
 import styles from './Toolbar.module.css';
 
 type Props = {
@@ -11,7 +12,7 @@ const toolbar = (props: Props) => {
   return (
     <header className={styles.Toolbar}>
       <div>Menu</div>
-      <div>Logo</div>
+      <Logo />
       <nav>{children}</nav>
     </header>
   );

@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import Toolbar from '../Toolbar/Toolbar';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
 import styles from './Layout.module.css';
 
 type Props = {
