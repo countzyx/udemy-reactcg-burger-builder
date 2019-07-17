@@ -5,14 +5,15 @@ import styles from './Modal.module.css';
 
 type Props = {
   children?: React.Node,
+  modalClosed: () => void,
   show: boolean,
 };
 
 const modal = (props: Props) => {
-  const { children, show } = props;
+  const { children, modalClosed, show } = props;
   return (
     <React.Fragment>
-      <Backdrop show={show} />
+      <Backdrop show={show} clicked={modalClosed} />
       <div
         className={styles.Modal}
         style={{
