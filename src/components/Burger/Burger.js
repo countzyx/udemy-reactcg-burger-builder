@@ -3,14 +3,10 @@
 import React from 'react';
 import styles from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
+import type Ingredients from '../../types/TypeIngredients';
 
 type Props = {
-  ingredients: {
-    bacon: number,
-    cheese: number,
-    meat: number,
-    salad: number,
-  },
+  ingredients: Ingredients,
 };
 
 const burger = (props: Props) => {
