@@ -4,11 +4,22 @@ import styles from './Modal.module.css';
 
 type Props = {
   children?: React.Node,
+  show: boolean,
 };
 
 const modal = (props: Props) => {
-  const { children } = props;
-  return <div className={styles.Modal}>{children}</div>;
+  const { children, show } = props;
+  return (
+    <div
+      className={styles.Modal}
+      style={{
+        transform: show ? 'translateY(0)' : 'translateY(-100vh)',
+        opacity: show ? '1' : '0',
+      }}
+    >
+      {children}
+    </div>
+  );
 };
 
 modal.defaultProps = {

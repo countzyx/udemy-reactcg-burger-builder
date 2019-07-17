@@ -7,6 +7,7 @@ type Props = {
   disableRemoveIngredient: { [ingredient: string]: boolean },
   ingredientAdded?: (ingredientType: string) => void,
   ingredientRemoved?: (ingredientType: string) => void,
+  ordered?: () => void,
   purchaseable: boolean,
   totalPrice: number,
 };
@@ -23,6 +24,7 @@ const buildControls = (props: Props) => {
     disableRemoveIngredient,
     ingredientAdded,
     ingredientRemoved,
+    ordered,
     purchaseable,
     totalPrice,
   } = props;
@@ -44,7 +46,12 @@ const buildControls = (props: Props) => {
           disabled={disableRemoveIngredient[controlProps.ingredientType]}
         />
       ))}
-      <button className={styles.OrderButton} disabled={!purchaseable} type="button">
+      <button
+        className={styles.OrderButton}
+        disabled={!purchaseable}
+        onClick={ordered}
+        type="button"
+      >
         ORDER NOW
       </button>
     </div>
@@ -54,6 +61,7 @@ const buildControls = (props: Props) => {
 buildControls.defaultProps = {
   ingredientAdded: null,
   ingredientRemoved: null,
+  ordered: null,
 };
 
 export default buildControls;
