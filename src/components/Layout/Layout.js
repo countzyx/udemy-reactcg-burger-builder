@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
-import type { Node } from 'react';
+import * as React from 'react';
+import Toolbar from '../Toolbar/Toolbar';
 import styles from './Layout.module.css';
 
 type Props = {
-  children?: Node,
+  children?: React.Node,
 };
 
 const layout = (props: Props) => {
@@ -12,7 +12,7 @@ const layout = (props: Props) => {
 
   return (
     <React.Fragment>
-      <div>Toolbar, SideDrawer, Backdrop</div>
+      <Toolbar />
       <main className={styles.Content}>{children}</main>
     </React.Fragment>
   );
