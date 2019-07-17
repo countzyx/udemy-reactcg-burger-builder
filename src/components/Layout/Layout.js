@@ -8,20 +8,35 @@ type Props = {
   children?: React.Node,
 };
 
-const layout = (props: Props) => {
-  const { children } = props;
-
-  return (
-    <React.Fragment>
-      <Toolbar />
-      <SideDrawer />
-      <main className={styles.Content}>{children}</main>
-    </React.Fragment>
-  );
+type State = {
+  showSideDrawer: boolean,
 };
 
-layout.defaultProps = {
-  children: null,
-};
+class Layout extends React.Component<Props, State> {
+  static defaultProps = {
+    children: null,
+  };
 
-export default layout;
+  state = {
+    showSideDrawer: true,
+  };
+
+  sideDrawerClosedHandler = () => {
+    this.setState({ showSideDrawer: false });
+  };
+
+  render = () => {
+    const { children } = this.props;
+    const { showSideDrawer } = this.state;
+
+    return (
+      <React.Fragment>
+        <Toolbar />
+        <SideDrawer closed={this.sideDrawerClosedHandler} isOpen={showSideDrawer} />
+        <main className={styles.Content}>{children}</main>
+      </React.Fragment>
+    );
+  };
+}
+
+export default Layout;
