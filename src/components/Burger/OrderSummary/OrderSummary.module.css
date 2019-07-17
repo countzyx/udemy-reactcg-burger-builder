@@ -1,3 +1,7 @@
 .OrderSummary {
   text-align: left;
 }
+
+.TotalPrice {
+  font-weight: bold;
+}
