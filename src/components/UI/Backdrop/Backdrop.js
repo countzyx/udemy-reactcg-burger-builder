@@ -1,17 +1,14 @@
 // @flow
 import * as React from 'react';
+import styles from './Backdrop.module.css';
 
 type Props = {
-  children?: React.Node,
+  show: boolean,
 };
 
 const backdrop = (props: Props) => {
-  const { children } = props;
-  return <div>{children}</div>;
-};
-
-backdrop.defaultProps = {
-  children: null,
+  const { show } = props;
+  return show ? <div className={styles.Backdrop} /> : null;
 };
 
 export default backdrop;
