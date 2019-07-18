@@ -27,8 +27,14 @@ const modal = (props: Props) => {
   );
 };
 
+// eslint-disable-next-line max-len
+const shouldNotUpdateModal = (
+  prevProps: $ReadOnly<Props>,
+  nextProps: $ReadOnly<Props>,
+): boolean => prevProps.show === nextProps.show;
+
 modal.defaultProps = {
   children: null,
 };
 
-export default modal;
+export default React.memo<Props>(modal, shouldNotUpdateModal);
