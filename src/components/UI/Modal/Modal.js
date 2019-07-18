@@ -28,10 +28,7 @@ const modal = (props: Props) => {
 };
 
 // eslint-disable-next-line max-len
-const shouldNotUpdateModal = (
-  prevProps: $ReadOnly<Props>,
-  nextProps: $ReadOnly<Props>,
-): boolean => prevProps.show === nextProps.show;
+const shouldNotUpdateModal = (prevProps: $ReadOnly<Props>, nextProps: $ReadOnly<Props>): boolean => prevProps.show === nextProps.show && prevProps.children === nextProps.children;
 
 modal.defaultProps = {
   children: null,

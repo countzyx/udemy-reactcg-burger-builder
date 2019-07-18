@@ -4,6 +4,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import type { Ingredients } from '../../types/TypeIngredients';
 
@@ -11,6 +12,7 @@ type Props = {};
 
 type State = {
   ingredients: Ingredients,
+  loading: boolean,
   purchaseable: boolean,
   purchasing: boolean,
   totalPrice: number,
@@ -31,6 +33,7 @@ class BurgerBuilder extends Component<Props, State> {
       meat: 0,
       salad: 0,
     },
+    loading: false,
     purchaseable: false,
     purchasing: false,
     totalPrice: 4,
@@ -81,6 +84,7 @@ class BurgerBuilder extends Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
+    this.setState({ loading: true });
     const { ingredients, totalPrice } = this.state;
     const order = {
       ingredients,
@@ -99,13 +103,13 @@ class BurgerBuilder extends Component<Props, State> {
 
     axios
       .post('/orders.json', order)
-      .then(response => console.log(response))
-      .catch(error => console.log(error));
+      .then(() => this.setState({ loading: false, purchasing: false }))
+      .catch(() => this.setState({ loading: false, purchasing: false }));
   };
 
   render = () => {
     const {
-      ingredients, purchaseable, purchasing, totalPrice,
+      ingredients, loading, purchaseable, purchasing, totalPrice,
     } = this.state;
     // Do I really needed a copy of this? Isn't this already a copy?
     const disableRemoveIngredient = Object.entries(ingredients).reduce(
@@ -115,15 +119,24 @@ class BurgerBuilder extends Component<Props, State> {
       }),
       {},
     );
+
+    let orderSummary = (
+      <OrderSummary
+        ingredients={ingredients}
+        purchaseCancelled={this.purchaseCancelHandler}
+        purchaseContinued={this.purchaseContinueHandler}
+        totalPrice={totalPrice}
+      />
+    );
+
+    if (loading) {
+      orderSummary = <Spinner />;
+    }
+
     return (
       <React.Fragment>
         <Modal show={purchasing} modalClosed={this.purchaseCancelHandler}>
-          <OrderSummary
-            ingredients={ingredients}
-            purchaseCancelled={this.purchaseCancelHandler}
-            purchaseContinued={this.purchaseContinueHandler}
-            totalPrice={totalPrice}
-          />
+          {orderSummary}
         </Modal>
         <Burger ingredients={ingredients} />
         <BuildControls
