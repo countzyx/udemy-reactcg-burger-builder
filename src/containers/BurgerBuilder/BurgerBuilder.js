@@ -80,6 +80,7 @@ class BurgerBuilder extends Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
+    // eslint-disable-next-line no-console
     console.log('Continued');
   };
 
