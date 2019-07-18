@@ -4,6 +4,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
 import type { Ingredients } from '../../types/TypeIngredients';
 
 type Props = {};
@@ -80,8 +81,26 @@ class BurgerBuilder extends Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    // eslint-disable-next-line no-console
-    console.log('Continued');
+    const { ingredients, totalPrice } = this.state;
+    const order = {
+      ingredients,
+      price: totalPrice,
+      customer: {
+        name: 'Max Schwarzmüller',
+        address: {
+          street: 'Teststreet 1',
+          zipCode: '41351',
+          country: 'Germany',
+        },
+        email: 'test@test.com',
+      },
+      deliveryMethod: 'fastest',
+    };
+
+    axios
+      .post('/orders.json', order)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
   };
 
   render = () => {
