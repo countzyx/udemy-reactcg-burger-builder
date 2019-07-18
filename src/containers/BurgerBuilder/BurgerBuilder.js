@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -35,8 +36,8 @@ class BurgerBuilder extends Component<Props, State> {
   };
 
   updatePurchaseState = (ingredients: Ingredients) => {
-    const sum = Object.keys(ingredients).reduce(
-      (agg: number, k: string) => agg + ingredients[k],
+    const sum = Object.keys(ingredients).reduce<number>(
+      (acc: number, k: string) => acc + ingredients[k],
       0,
     );
     this.setState({ purchaseable: sum > 0 });
@@ -86,8 +87,13 @@ class BurgerBuilder extends Component<Props, State> {
     const {
       ingredients, purchaseable, purchasing, totalPrice,
     } = this.state;
-    const disableRemoveIngredient = Object.assign(
-      ...Object.entries(ingredients).map(([k, v]) => ({ [k]: v <= 0 })),
+    // Do I really needed a copy of this? Isn't this already a copy?
+    const disableRemoveIngredient = Object.entries(ingredients).reduce(
+      (obj: { [k: string]: boolean }, [k: string, v: number]): { [k: string]: boolean } => ({
+        ...obj,
+        [k]: typeof v === 'number' && v <= 0,
+      }),
+      {},
     );
     return (
       <React.Fragment>
