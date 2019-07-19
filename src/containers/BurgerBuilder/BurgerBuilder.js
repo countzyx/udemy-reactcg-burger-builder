@@ -1,14 +1,16 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Ingredients } from '../../types/TypeIngredients';
 
-type Props = {};
+type Props = {||};
+type DefaultProps = {||};
 
 type State = {
   ingredients: Ingredients,
@@ -25,7 +27,7 @@ const INGREDIENT_PRICES = {
   salad: 0.5,
 };
 
-class BurgerBuilder extends Component<Props, State> {
+class BurgerBuilder extends React.Component<Props, State> {
   state = {
     ingredients: {
       bacon: 0,
@@ -102,7 +104,7 @@ class BurgerBuilder extends Component<Props, State> {
     };
 
     axios
-      .post('/orders.json', order)
+      .post('/orders.jso', order)
       .then(() => this.setState({ loading: false, purchasing: false }))
       .catch(() => this.setState({ loading: false, purchasing: false }));
   };
@@ -152,4 +154,4 @@ class BurgerBuilder extends Component<Props, State> {
   };
 }
 
-export default BurgerBuilder;
+export default withErrorHandler<React.Config<Props, DefaultProps>>(BurgerBuilder, axios);
