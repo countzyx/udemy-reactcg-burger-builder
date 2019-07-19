@@ -4,7 +4,7 @@ import type { AxiosInstance } from 'axios';
 import Modal from '../../components/UI/Modal/Modal';
 
 const withErrorHandler = <Config>(
-  WrappedComponent: React.AbstractComponent<{| ...Config |}>,
+  WrappedComponent: React.AbstractComponent<Config>,
   axios: AxiosInstance,
 ): React.AbstractComponent<Config> => (props: Config) => {
     const [error, setError] = React.useState(null);

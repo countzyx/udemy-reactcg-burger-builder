@@ -9,8 +9,8 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Ingredients } from '../../types/TypeIngredients';
 
-type Props = {||};
-type DefaultProps = {||};
+type Props = {};
+type DefaultProps = {};
 
 type State = {
   ingredients: Ingredients,
@@ -104,7 +104,7 @@ class BurgerBuilder extends React.Component<Props, State> {
     };
 
     axios
-      .post('/orders.jso', order)
+      .post('/orders.json', order)
       .then(() => this.setState({ loading: false, purchasing: false }))
       .catch(() => this.setState({ loading: false, purchasing: false }));
   };
