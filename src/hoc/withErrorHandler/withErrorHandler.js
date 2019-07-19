@@ -1,38 +1,40 @@
-// @flow
 import * as React from 'react';
-import type { AxiosInstance } from 'axios';
 import Modal from '../../components/UI/Modal/Modal';
 
-const withErrorHandler = <Config>(
-  WrappedComponent: React.AbstractComponent<{| ...Config |}>,
-  axios: AxiosInstance,
-): React.AbstractComponent<Config> => (props: Config) => {
-    const [error, setError] = React.useState(null);
-    React.useEffect(() => {
+const withErrorHandler = (WrappedComponent, axios) => class extends React.Component {
+    state = {
+      error: null,
+    };
+
+    componentDidMount = () => {
       axios.interceptors.request.use((request) => {
-        setError(null);
+        this.setState({ error: null });
         return request;
       });
 
-      axios.interceptors.request.use(
+      axios.interceptors.response.use(
         response => response,
-        (err) => {
-          setError(err);
+        (error) => {
+          this.setState({ error });
         },
       );
-    }, []);
-
-    const errorConfirmedHandler = () => {
-      setError(null);
     };
 
-    return (
-      <React.Fragment>
-        <Modal show={error != null} modalClosed={errorConfirmedHandler}>
-          {error ? error.message : null}
-        </Modal>
-        <WrappedComponent {...props} />
-      </React.Fragment>
-    );
-  };
+    errorConfirmedHandler = () => {
+      this.setState({ error: null });
+    };
+
+    render = () => {
+      const { error } = this.state;
+      return (
+        <React.Fragment>
+          <Modal show={error} modalClosed={this.errorConfirmedHandler}>
+            {error ? error.message : null}
+          </Modal>
+          <WrappedComponent {...this.props} />
+        </React.Fragment>
+      );
+    };
+};
+
 export default withErrorHandler;
