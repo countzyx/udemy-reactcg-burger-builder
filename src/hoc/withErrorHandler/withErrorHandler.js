@@ -9,17 +9,27 @@ const withErrorHandler = <Config>(
 ): React.AbstractComponent<Config> => (props: Config) => {
     const [error, setError] = React.useState(null);
     React.useEffect(() => {
-      axios.interceptors.request.use((request) => {
+      const requestInterceptor = axios.interceptors.request.use((request) => {
         setError(null);
         return request;
       });
 
-      axios.interceptors.response.use(
+      return () => {
+        axios.interceptors.request.eject(requestInterceptor);
+      };
+    }, []);
+
+    React.useEffect(() => {
+      const responseInterceptor = axios.interceptors.response.use(
         response => response,
         (err) => {
           setError(err);
         },
       );
+
+      return () => {
+        axios.interceptors.response.eject(responseInterceptor);
+      };
     }, []);
 
     const errorConfirmedHandler = () => {
