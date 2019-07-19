@@ -13,7 +13,8 @@ type Props = {};
 type DefaultProps = {};
 
 type State = {
-  ingredients: Ingredients,
+  error?: ?Error,
+  ingredients?: ?Ingredients,
   loading: boolean,
   purchaseable: boolean,
   purchasing: boolean,
@@ -29,16 +30,23 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
-    ingredients: {
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-      salad: 0,
-    },
+    error: null,
+    ingredients: null,
     loading: false,
     purchaseable: false,
     purchasing: false,
     totalPrice: 4,
+  };
+
+  componentDidMount = () => {
+    axios
+      .get('/ingredients.json')
+      .then((response) => {
+        this.setState({ ingredients: response.data });
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
   };
 
   updatePurchaseState = (ingredients: Ingredients) => {
@@ -51,6 +59,10 @@ class BurgerBuilder extends React.Component<Props, State> {
 
   addIngredientHandler = (ingredientType: string) => {
     const { ingredients, totalPrice } = this.state;
+    if (!ingredients) {
+      return;
+    }
+
     const oldCount = ingredients[ingredientType];
     const newCount = oldCount + 1;
     const updatedIngredients = { ...ingredients };
@@ -63,6 +75,9 @@ class BurgerBuilder extends React.Component<Props, State> {
 
   removeIngredientHandler = (ingredientType: string) => {
     const { ingredients, totalPrice } = this.state;
+    if (!ingredients) {
+      return;
+    }
     const oldCount = ingredients[ingredientType];
     if (oldCount <= 0) {
       return;
@@ -111,8 +126,21 @@ class BurgerBuilder extends React.Component<Props, State> {
 
   render = () => {
     const {
-      ingredients, loading, purchaseable, purchasing, totalPrice,
+      error, ingredients, loading, purchaseable, purchasing, totalPrice,
     } = this.state;
+
+    if (!ingredients) {
+      if (error) {
+        return (
+          <p>
+            Application Error:
+            {error.toString()}
+          </p>
+        );
+      }
+      return <Spinner />;
+    }
+
     // Do I really needed a copy of this? Isn't this already a copy?
     const disableRemoveIngredient = Object.entries(ingredients).reduce(
       (obj: { [k: string]: boolean }, [k: string, v: number]): { [k: string]: boolean } => ({
