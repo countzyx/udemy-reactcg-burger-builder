@@ -10,6 +10,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Ingredients } from '../../types/TypeIngredients';
 
 type Props = {||};
+type DefaultProps = {||};
 
 type State = {
   ingredients: Ingredients,
@@ -153,4 +154,4 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+export default withErrorHandler<React.Config<Props, DefaultProps>>(BurgerBuilder, axios);
