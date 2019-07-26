@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import styles from './App.module.css';
 import Layout from '../../hoc/Layout/Layout';
 import BurgerBuilder from '../BurgerBuilder/BurgerBuilder';
@@ -12,8 +13,10 @@ class App extends Component<Props> {
   render = () => (
     <div className={styles.App}>
       <Layout>
-        <BurgerBuilder />
-        <Checkout />
+        <Switch>
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/" exact component={BurgerBuilder} />
+        </Switch>
       </Layout>
     </div>
   );
