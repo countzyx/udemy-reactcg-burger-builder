@@ -10,7 +10,7 @@
 
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
-const PUBLIC_URL: string = process.env.PUBLIC_URL != null ? process.env.PUBLIC_URL : '';
+const PUBLIC_URL = process.env.PUBLIC_URL != null ? process.env.PUBLIC_URL : '';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost'
