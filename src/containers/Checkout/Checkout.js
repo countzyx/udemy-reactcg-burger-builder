@@ -1,9 +1,12 @@
 // @flow
 import React, { Component } from 'react';
+import type { History } from 'react-router';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import type { Ingredients } from '../../types/TypeIngredients';
 
-type Props = {};
+type Props = {
+  history: History,
+};
 type State = {
   ingredients: Ingredients,
 };
@@ -18,11 +21,25 @@ class Checkout extends Component<Props, State> {
     },
   };
 
+  checkoutCancelledHandler = () => {
+    const { history } = this.props;
+    history.goBack();
+  };
+
+  checkoutContinuedHander = () => {
+    const { history } = this.props;
+    history.replace('/checkout/contact-data');
+  };
+
   render = () => {
     const { ingredients } = this.state;
     return (
       <div>
-        <CheckoutSummary ingredients={ingredients} />
+        <CheckoutSummary
+          ingredients={ingredients}
+          checkoutCancelled={this.checkoutCancelledHandler}
+          checkoutContinued={this.checkoutContinuedHander}
+        />
       </div>
     );
   };

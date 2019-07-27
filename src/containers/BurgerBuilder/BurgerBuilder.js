@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { History } from 'react-router';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -9,7 +10,10 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Ingredients } from '../../types/TypeIngredients';
 
-type Props = {};
+type Props = {
+  history: History,
+};
+
 type DefaultProps = {};
 
 type State = {
@@ -101,27 +105,8 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const { ingredients, totalPrice } = this.state;
-    const order = {
-      ingredients,
-      price: totalPrice,
-      customer: {
-        name: 'Max Schwarzmüller',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '41351',
-          country: 'Germany',
-        },
-        email: 'test@test.com',
-      },
-      deliveryMethod: 'fastest',
-    };
-
-    axios
-      .post('/orders.json', order)
-      .then(() => this.setState({ loading: false, purchasing: false }))
-      .catch(() => this.setState({ loading: false, purchasing: false }));
+    const { history } = this.props;
+    history.push('/checkout');
   };
 
   render = () => {

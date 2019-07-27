@@ -6,20 +6,32 @@ import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 
 type Props = {
+  checkoutCancelled?: () => void,
+  checkoutContinued?: () => void,
   ingredients: Ingredients,
 };
 
 const checkoutSummary = (props: Props) => {
-  const { ingredients } = props;
+  const { checkoutCancelled, checkoutContinued, ingredients } = props;
   return (
     <div className={styles.CheckoutSummary}>
       <h1>We hope you enjoy your meal!</h1>
       <div className={styles.Burger}>
         <Burger ingredients={ingredients} />
       </div>
-      <Button buttonType="Danger">Cancel</Button>
-      <Button buttonType="Success">Continue</Button>
+      <Button buttonType="Danger" clicked={checkoutCancelled}>
+        Cancel
+      </Button>
+      <Button buttonType="Success" clicked={checkoutContinued}>
+        Continue
+      </Button>
     </div>
   );
 };
+
+checkoutSummary.defaultProps = {
+  checkoutCancelled: () => {},
+  checkoutContinued: () => {},
+};
+
 export default checkoutSummary;
