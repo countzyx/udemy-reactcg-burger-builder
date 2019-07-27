@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
-import { History } from 'react-router';
+import type { History } from 'react-router';
+import queryString from 'query-string';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -105,8 +106,13 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
+    const { ingredients } = this.state;
+    const ingredientSearch = queryString.stringify(ingredients);
     const { history } = this.props;
-    history.push('/checkout');
+    history.push({
+      pathname: '/checkout',
+      search: ingredientSearch,
+    });
   };
 
   render = () => {

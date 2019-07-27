@@ -12,9 +12,10 @@ type Props = {
 const burger = (props: Props) => {
   const { ingredients } = props;
   const ingredientsArray = Object.keys(ingredients)
-    .map(name => [...Array(ingredients[name])].map((_, i) => (
-      <BurgerIngredient key={name + i} ingredientType={name} />
-    )))
+    .map((name) => {
+      const placeholders = [...Array(ingredients[name])];
+      return placeholders.map((_, i) => <BurgerIngredient key={name + i} ingredientType={name} />);
+    })
     .reduce((agg, el) => agg.concat(el), []);
 
   if (ingredientsArray.length === 0) {
