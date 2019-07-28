@@ -106,8 +106,11 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    const { ingredients } = this.state;
-    const ingredientSearch = queryString.stringify(ingredients);
+    const { ingredients, totalPrice } = this.state;
+    const ingredientSearch = queryString.stringify({
+      ingredients: JSON.stringify(ingredients),
+      totalPrice,
+    });
     const { history } = this.props;
     history.push({
       pathname: '/checkout',
