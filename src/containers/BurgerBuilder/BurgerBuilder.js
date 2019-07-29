@@ -18,7 +18,7 @@ type Props = {
 type DefaultProps = {};
 
 type State = {
-  error?: ?Error,
+  error: ?Error,
   ingredients?: ?Ingredients,
   loading: boolean,
   purchaseable: boolean,
