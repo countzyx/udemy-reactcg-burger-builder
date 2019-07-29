@@ -1,26 +1,25 @@
 // @flow
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './NavigationItem.module.css';
 
 type Props = {
-  active?: boolean,
   children?: React.Node,
   link: string,
 };
 
 const navigationItem = (props: Props) => {
-  const { active, children, link } = props;
+  const { children, link } = props;
   return (
     <li className={styles.NavigationItem}>
-      <a href={link} className={active ? styles.active : null}>
+      <NavLink to={link} exact activeClassName={styles.active}>
         {children}
-      </a>
+      </NavLink>
     </li>
   );
 };
 
 navigationItem.defaultProps = {
-  active: false,
   children: null,
 };
 
