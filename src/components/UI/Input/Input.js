@@ -14,7 +14,19 @@ type Props = {
 const getInputElement = (inputType: InputType, elementConfig: FormElementConfig, value: string) => {
   switch (inputType) {
     case 'select':
-      return <select className={styles.Select} {...elementConfig} />;
+      return (
+        <select className={styles.Select} value={value}>
+          {elementConfig.options ? (
+            elementConfig.options.map(o => (
+              <option key={o.value} value={o.value}>
+                {o.displayValue}
+              </option>
+            ))
+          ) : (
+            <option>No options available.</option>
+          )}
+        </select>
+      );
     case 'textarea':
       return <textarea className={styles.InputElement} {...elementConfig} defaultValue={value} />;
     default:
