@@ -4,6 +4,7 @@ import type { History } from 'react-router';
 import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 import type { Ingredients } from '../../../types/TypeIngredients';
 import axios from '../../../axios-orders';
 
@@ -81,10 +82,10 @@ class ContactData extends Component<Props, State> {
       <Spinner />
     ) : (
       <form>
-        <input type="text" name="name" placeholder={name || 'Your name'} />
-        <input type="text" name="email" placeholder={email || 'Your email'} />
-        <input type="text" name="street" placeholder={address.street || 'Your street'} />
-        <input type="text" name="postalCode" placeholder={address.postalCode || 'Your name'} />
+        <Input inputtype="input" id="name" label="Name:" type="text" placeholder={name || 'Your name'} />
+        <Input inputtype="input" id="email" label="Email:" placeholder={email || 'Your email'} />
+        <Input inputtype="input" id="street" label="Street:" type="text" placeholder={address.street || 'Your street'} />
+        <Input inputtype="input" id="postalCode" label="Postal Code" type="text" placeholder={address.postalCode || 'Your name'} />
         <Button buttonType="Success" clicked={this.orderHandler}>
           Order
         </Button>

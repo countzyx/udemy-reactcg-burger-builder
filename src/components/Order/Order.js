@@ -5,16 +5,17 @@ import type { Ingredients } from '../../types/TypeIngredients';
 
 type Props = {
   ingredients: Ingredients,
+  orderId: string,
   price: number,
 };
 
 const order = (props: Props) => {
-  const { ingredients, price } = props;
+  const { ingredients, orderId, price } = props;
   const ingredientsJsx = Object.entries(ingredients).map(([k, v]) => (
-    <span className={styles.Ingredient}>
+    <span key={orderId + k} className={styles.Ingredient}>
       {k}
 :
-      {JSON.stringify(v)}
+      {((v: any): string)}
     </span>
   ));
   return (

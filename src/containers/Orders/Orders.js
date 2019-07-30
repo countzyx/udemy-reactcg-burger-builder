@@ -60,7 +60,12 @@ class Orders extends React.Component<Props, State> {
       <div>
         {orders
           ? orders.map(order => (
-            <Order key={order.id} ingredients={order.ingredients} price={order.price} />
+            <Order
+              key={order.id}
+              ingredients={order.ingredients}
+              orderId={order.id}
+              price={order.price}
+            />
           ))
           : null}
       </div>
