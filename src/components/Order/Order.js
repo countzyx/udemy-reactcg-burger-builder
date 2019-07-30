@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import styles from './Order.module.css';
-import type { Ingredients } from '../../types/TypeIngredients';
+import type { Ingredients } from '../../types';
 
 type Props = {
   ingredients: Ingredients,

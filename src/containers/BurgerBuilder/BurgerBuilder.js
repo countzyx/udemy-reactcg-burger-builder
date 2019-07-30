@@ -9,7 +9,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import type { Ingredients } from '../../types/TypeIngredients';
+import type { Ingredients } from '../../types';
 
 type Props = {
   history: History,

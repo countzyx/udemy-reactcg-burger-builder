@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import type { History, Location, Match } from 'react-router';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
-import type { Ingredients } from '../../types/TypeIngredients';
+import type { Ingredients } from '../../types';
 
 type Props = {
   history: History,

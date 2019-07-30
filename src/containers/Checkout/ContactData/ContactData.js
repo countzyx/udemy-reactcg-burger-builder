@@ -5,18 +5,11 @@ import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import type { Ingredients } from '../../../types/TypeIngredients';
+import type { Ingredients, OrderForm } from '../../../types';
 import axios from '../../../axios-orders';
 
-type Address = {
-  street: string,
-  postalCode: string,
-};
-
 type State = {
-  name: string,
-  email: string,
-  address: Address,
+  orderForm: ?OrderForm,
   loading: boolean,
 };
 
@@ -38,11 +31,60 @@ class ContactData extends Component<Props, State> {
   };
 
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: '',
+    orderForm: {
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'cheapest', displayValue: 'Cheapest' },
+            { value: 'fastest', displayValue: 'Fastest' },
+          ],
+          placeholder: null,
+          type: 'text',
+        },
+        label: 'Delivery Method',
+        value: 'fastest',
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          options: null,
+          placeholder: 'Your email address',
+          type: 'email',
+        },
+        label: 'Email',
+        value: 'test@test.com',
+      },
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          options: null,
+          placeholder: 'Your name',
+          type: 'text',
+        },
+        label: 'Name',
+        value: 'Max',
+      },
+      postalCode: {
+        elementType: 'input',
+        elementConfig: {
+          options: null,
+          placeholder: 'Your postal code',
+          type: 'text',
+        },
+        label: 'Postal Code',
+        value: '41351',
+      },
+      streetAddress: {
+        elementType: 'input',
+        elementConfig: {
+          options: null,
+          placeholder: 'Your street address',
+          type: 'text',
+        },
+        label: 'Street Address',
+        value: '1 Test Street',
+      },
     },
     loading: false,
   };
@@ -75,27 +117,38 @@ class ContactData extends Component<Props, State> {
   };
 
   render = () => {
-    const {
-      name, email, address, loading,
-    } = this.state;
-    const contactForm = loading ? (
-      <Spinner />
-    ) : (
-      <form>
-        <Input inputtype="input" id="name" label="Name:" type="text" placeholder={name || 'Your name'} />
-        <Input inputtype="input" id="email" label="Email:" placeholder={email || 'Your email'} />
-        <Input inputtype="input" id="street" label="Street:" type="text" placeholder={address.street || 'Your street'} />
-        <Input inputtype="input" id="postalCode" label="Postal Code" type="text" placeholder={address.postalCode || 'Your name'} />
-        <Button buttonType="Success" clicked={this.orderHandler}>
-          Order
-        </Button>
-      </form>
-    );
+    const { orderForm, loading } = this.state;
+    if (loading) {
+      return <Spinner />;
+    }
+
+    if (!orderForm) {
+      return <p>No order form data present.</p>;
+    }
+
+    const formElements = Object.keys(orderForm).map((key) => {
+      const config = orderForm[key];
+      return (
+        <Input
+          key={key}
+          id={key}
+          inputType={config.elementType}
+          label={config.label}
+          elementConfig={config.elementConfig}
+          value={config.value}
+        />
+      );
+    });
 
     return (
       <div className={styles.ContactData}>
         <h4>Enter your contact data</h4>
-        {contactForm}
+        <form>
+          {formElements}
+          <Button buttonType="Success" clicked={this.orderHandler}>
+            Order
+          </Button>
+        </form>
       </div>
     );
   };

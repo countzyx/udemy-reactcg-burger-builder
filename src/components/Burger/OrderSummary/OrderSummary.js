@@ -2,7 +2,7 @@
 import * as React from 'react';
 import styles from './OrderSummary.module.css';
 import Button from '../../UI/Button/Button';
-import type { Ingredients } from '../../../types/TypeIngredients';
+import type { Ingredients } from '../../../types';
 
 type Props = {
   ingredients: Ingredients,

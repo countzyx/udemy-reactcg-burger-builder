@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import styles from './Button.module.css';
-import type { ButtonType } from '../../../types/TypeButtonType';
+import type { ButtonType } from '../../../types';
 
 type Props = {
   buttonType?: ButtonType,

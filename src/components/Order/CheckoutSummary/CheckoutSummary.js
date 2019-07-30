@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import styles from './CheckoutSummary.module.css';
-import type { Ingredients } from '../../../types/TypeIngredients';
+import type { Ingredients } from '../../../types';
 import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 

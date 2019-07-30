@@ -1,26 +1,32 @@
 // @flow
 import * as React from 'react';
 import styles from './Input.module.css';
-import type { InputType } from '../../../types/TypeInputType';
+import type { FormElementConfig, InputType } from '../../../types';
 
 type Props = {
+  elementConfig: FormElementConfig,
   id: string,
-  inputtype: InputType,
+  inputType: InputType,
   label: string,
+  value: string,
 };
 
-const getInputElement = (inputtype: InputType, props: Props) => {
-  switch (inputtype) {
+const getInputElement = (inputType: InputType, elementConfig: FormElementConfig, value: string) => {
+  switch (inputType) {
+    case 'select':
+      return <select className={styles.Select} {...elementConfig} />;
     case 'textarea':
-      return <textarea className={styles.InputElement} {...props} />;
+      return <textarea className={styles.InputElement} {...elementConfig} defaultValue={value} />;
     default:
-      return <input className={styles.InputElement} {...props} />;
+      return <input className={styles.InputElement} {...elementConfig} defaultValue={value} />;
   }
 };
 
 const input = (props: Props) => {
-  const { id, inputtype, label } = props;
-  const inputElement = getInputElement(inputtype, props);
+  const {
+    elementConfig, id, inputType, label, value,
+  } = props;
+  const inputElement = getInputElement(inputType, elementConfig, value);
   return (
     <div className={styles.Input}>
       <label htmlFor={id} className={styles.Label}>
