@@ -15,7 +15,7 @@ const button = (props: Props) => {
     <button
       className={[styles.Button, styles[buttonType]].join(' ')}
       onClick={clicked}
-      type="button"
+      type="submit"
     >
       {children}
     </button>

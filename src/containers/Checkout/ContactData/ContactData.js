@@ -89,22 +89,24 @@ class ContactData extends Component<Props, State> {
     loading: false,
   };
 
-  orderHandler = () => {
+  orderHandler = (event: SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
     this.setState({ loading: true });
+    const { orderForm } = this.state;
+    if (!orderForm) {
+      return;
+    }
+
+    const orderData = Object.keys(orderForm).reduce((acc, key) => {
+      acc[key] = orderForm[key].value;
+      return acc;
+    }, {});
+
     const { ingredients, totalPrice, history } = this.props;
     const order = {
       ingredients,
+      orderData,
       price: totalPrice,
-      customer: {
-        name: 'Max Schwarzmüller',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '41351',
-          country: 'Germany',
-        },
-        email: 'test@test.com',
-      },
-      deliveryMethod: 'fastest',
     };
 
     axios
@@ -127,7 +129,6 @@ class ContactData extends Component<Props, State> {
     updatedFormElement.value = event.currentTarget.value;
     updatedOrderForm[id] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm });
-    console.log(id, event.currentTarget.value);
   };
 
   render = () => {
@@ -158,11 +159,9 @@ class ContactData extends Component<Props, State> {
     return (
       <div className={styles.ContactData}>
         <h4>Enter your contact data</h4>
-        <form>
+        <form onSubmit={this.orderHandler}>
           {formElements}
-          <Button buttonType="Success" clicked={this.orderHandler}>
-            Order
-          </Button>
+          <Button buttonType="Success">Order</Button>
         </form>
       </div>
     );
