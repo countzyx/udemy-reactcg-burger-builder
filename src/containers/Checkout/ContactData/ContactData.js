@@ -116,6 +116,20 @@ class ContactData extends Component<Props, State> {
       .catch(() => this.setState({ loading: false }));
   };
 
+  inputChangedHandler = (event: SyntheticEvent<HTMLInputElement>, id: string) => {
+    const { orderForm } = this.state;
+    const updatedOrderForm = {
+      ...orderForm,
+    };
+    const updatedFormElement = {
+      ...updatedOrderForm[id],
+    };
+    updatedFormElement.value = event.currentTarget.value;
+    updatedOrderForm[id] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+    console.log(id, event.currentTarget.value);
+  };
+
   render = () => {
     const { orderForm, loading } = this.state;
     if (loading) {
@@ -130,6 +144,7 @@ class ContactData extends Component<Props, State> {
       const config = orderForm[key];
       return (
         <Input
+          changed={event => this.inputChangedHandler(event, key)}
           key={key}
           id={key}
           inputType={config.elementType}
