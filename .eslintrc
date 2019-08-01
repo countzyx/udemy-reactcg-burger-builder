@@ -23,8 +23,13 @@
   },
   "plugins": ["react", "jsx-a11y", "import", "flowtype"],
   "rules": {
+    "react/default-props-match-prop-types": [
+      2,
+      { "allowRequiredDefaults": true }
+    ],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prefer-stateless-function": "warn",
+    "react/require-default-props": [2, { "forbidDefaultForRequired": false }],
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "warn"
