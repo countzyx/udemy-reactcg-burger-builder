@@ -5,7 +5,7 @@ import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import type { Ingredients, OrderForm } from '../../../types';
+import type { FormElementValidationRules, Ingredients, OrderForm } from '../../../types';
 import axios from '../../../axios-orders';
 
 type State = {
@@ -43,6 +43,10 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Delivery Method',
+        valid: true,
+        validation: {
+          required: false,
+        },
         value: 'fastest',
       },
       email: {
@@ -53,6 +57,10 @@ class ContactData extends Component<Props, State> {
           type: 'email',
         },
         label: 'Email',
+        valid: false,
+        validation: {
+          required: true,
+        },
         value: 'test@test.com',
       },
       name: {
@@ -63,6 +71,10 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Name',
+        valid: false,
+        validation: {
+          required: true,
+        },
         value: 'Max',
       },
       postalCode: {
@@ -73,6 +85,12 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Postal Code',
+        valid: false,
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 10,
+        },
         value: '41351',
       },
       streetAddress: {
@@ -83,6 +101,10 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Street Address',
+        valid: false,
+        validation: {
+          required: true,
+        },
         value: '1 Test Street',
       },
     },
@@ -118,6 +140,25 @@ class ContactData extends Component<Props, State> {
       .catch(() => this.setState({ loading: false }));
   };
 
+  checkValidity = (value: string, rules: FormElementValidationRules) => {
+    let isValid = true;
+    const trimmedValue = value.trim();
+
+    if (rules.required) {
+      isValid = trimmedValue !== '' && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = trimmedValue.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = trimmedValue.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
+  };
+
   inputChangedHandler = (event: SyntheticEvent<HTMLInputElement>, id: string) => {
     const { orderForm } = this.state;
     const updatedOrderForm = {
@@ -126,7 +167,13 @@ class ContactData extends Component<Props, State> {
     const updatedFormElement = {
       ...updatedOrderForm[id],
     };
+
     updatedFormElement.value = event.currentTarget.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation,
+    );
+
     updatedOrderForm[id] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm });
   };

@@ -38,10 +38,18 @@ export type FormElementConfig = {
   type: string,
 };
 
+export type FormElementValidationRules = {
+  required?: ?boolean,
+  minLength?: ?number,
+  maxLength?: ?number,
+};
+
 export type FormElement = {
   elementType: InputType,
   elementConfig: FormElementConfig,
   label: string,
+  valid: boolean,
+  validation: FormElementValidationRules,
   value: string,
 };
 
