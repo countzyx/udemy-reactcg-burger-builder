@@ -48,6 +48,7 @@ export type FormElement = {
   elementType: InputType,
   elementConfig: FormElementConfig,
   label: string,
+  touched: boolean,
   valid: boolean,
   validation?: FormElementValidationRules,
   value: string,

@@ -11,6 +11,7 @@ type Props = {
   invalid: boolean,
   label: string,
   shouldValidate: boolean,
+  touched: boolean,
   value: string,
 };
 
@@ -21,8 +22,11 @@ const getInputElement = (
   changed: ?(event: SyntheticEvent<HTMLInputElement>) => void,
   invalid: boolean,
   shouldValidate: boolean,
+  touched: boolean,
 ) => {
-  const elementStyles = `${styles.InputElement} ${invalid && shouldValidate ? styles.Invalid : ''}`;
+  const elementStyles = `${styles.InputElement} ${
+    invalid && shouldValidate && touched ? styles.Invalid : ''
+  }`;
   switch (inputType) {
     case 'select':
       return (
@@ -51,7 +55,15 @@ const getInputElement = (
 
 const input = (props: Props) => {
   const {
-    changed, elementConfig, id, inputType, invalid, label, shouldValidate, value,
+    changed,
+    elementConfig,
+    id,
+    inputType,
+    invalid,
+    label,
+    shouldValidate,
+    touched,
+    value,
   } = props;
   const inputElement = getInputElement(
     inputType,
@@ -60,6 +72,7 @@ const input = (props: Props) => {
     changed,
     invalid,
     shouldValidate,
+    touched,
   );
   return (
     <div className={styles.Input}>

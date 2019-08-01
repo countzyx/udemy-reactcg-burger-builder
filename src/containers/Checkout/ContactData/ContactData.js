@@ -48,6 +48,7 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Delivery Method',
+        touched: false,
         valid: true,
         value: 'fastest',
       },
@@ -59,6 +60,7 @@ class ContactData extends Component<Props, State> {
           type: 'email',
         },
         label: 'Email',
+        touched: false,
         valid: false,
         validation: {
           required: true,
@@ -73,6 +75,7 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Name',
+        touched: false,
         valid: false,
         validation: {
           required: true,
@@ -87,6 +90,7 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Postal Code',
+        touched: false,
         valid: false,
         validation: {
           required: true,
@@ -103,6 +107,7 @@ class ContactData extends Component<Props, State> {
           type: 'text',
         },
         label: 'Street Address',
+        touched: false,
         valid: false,
         validation: {
           required: true,
@@ -175,6 +180,7 @@ class ContactData extends Component<Props, State> {
       updatedFormElement.value,
       updatedFormElement.validation,
     );
+    updatedFormElement.touched = true;
 
     updatedOrderForm[id] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm });
@@ -202,6 +208,7 @@ class ContactData extends Component<Props, State> {
           invalid={!config.valid}
           label={config.label}
           shouldValidate={config.validation !== undefined}
+          touched={config.touched}
           value={config.value}
         />
       );
