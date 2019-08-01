@@ -8,7 +8,9 @@ type Props = {
   elementConfig: FormElementConfig,
   id: string,
   inputType: InputType,
+  invalid: boolean,
   label: string,
+  shouldValidate: boolean,
   value: string,
 };
 
@@ -17,11 +19,14 @@ const getInputElement = (
   elementConfig: FormElementConfig,
   value: string,
   changed: ?(event: SyntheticEvent<HTMLInputElement>) => void,
+  invalid: boolean,
+  shouldValidate: boolean,
 ) => {
+  const elementStyles = `${styles.InputElement} ${invalid && shouldValidate ? styles.Invalid : ''}`;
   switch (inputType) {
     case 'select':
       return (
-        <select className={styles.Select} value={value} onChange={changed}>
+        <select className={elementStyles} value={value} onChange={changed}>
           {elementConfig.options ? (
             elementConfig.options.map(o => (
               <option key={o.value} value={o.value}>
@@ -35,30 +40,27 @@ const getInputElement = (
       );
     case 'textarea':
       return (
-        <textarea
-          className={styles.InputElement}
-          {...elementConfig}
-          value={value}
-          onChange={changed}
-        />
+        <textarea className={elementStyles} {...elementConfig} value={value} onChange={changed} />
       );
     default:
       return (
-        <input
-          className={styles.InputElement}
-          {...elementConfig}
-          value={value}
-          onChange={changed}
-        />
+        <input className={elementStyles} {...elementConfig} value={value} onChange={changed} />
       );
   }
 };
 
 const input = (props: Props) => {
   const {
-    changed, elementConfig, id, inputType, label, value,
+    changed, elementConfig, id, inputType, invalid, label, shouldValidate, value,
   } = props;
-  const inputElement = getInputElement(inputType, elementConfig, value, changed);
+  const inputElement = getInputElement(
+    inputType,
+    elementConfig,
+    value,
+    changed,
+    invalid,
+    shouldValidate,
+  );
   return (
     <div className={styles.Input}>
       <label htmlFor={id} className={styles.Label}>
@@ -71,6 +73,7 @@ const input = (props: Props) => {
 
 input.defaultProps = {
   changed: null,
+  invalid: false,
 };
 
 export default input;

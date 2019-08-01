@@ -49,7 +49,7 @@ export type FormElement = {
   elementConfig: FormElementConfig,
   label: string,
   valid: boolean,
-  validation: FormElementValidationRules,
+  validation?: FormElementValidationRules,
   value: string,
 };
 

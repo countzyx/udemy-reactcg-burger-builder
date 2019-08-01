@@ -5,11 +5,16 @@ import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import type { FormElementValidationRules, Ingredients, OrderForm } from '../../../types';
+import type {
+  FormElement,
+  FormElementValidationRules,
+  Ingredients,
+  OrderForm,
+} from '../../../types';
 import axios from '../../../axios-orders';
 
 type State = {
-  orderForm: ?OrderForm,
+  orderForm?: OrderForm,
   loading: boolean,
 };
 
@@ -44,9 +49,6 @@ class ContactData extends Component<Props, State> {
         },
         label: 'Delivery Method',
         valid: true,
-        validation: {
-          required: false,
-        },
         value: 'fastest',
       },
       email: {
@@ -189,15 +191,17 @@ class ContactData extends Component<Props, State> {
     }
 
     const formElements = Object.keys(orderForm).map((key) => {
-      const config = orderForm[key];
+      const config: FormElement = orderForm[key];
       return (
         <Input
           changed={event => this.inputChangedHandler(event, key)}
           key={key}
+          elementConfig={config.elementConfig}
           id={key}
           inputType={config.elementType}
+          invalid={!config.valid}
           label={config.label}
-          elementConfig={config.elementConfig}
+          shouldValidate={config.validation !== undefined}
           value={config.value}
         />
       );
