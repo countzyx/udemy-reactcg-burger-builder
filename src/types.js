@@ -51,6 +51,7 @@ export type FormElement = {
   touched: boolean,
   valid: boolean,
   validation?: FormElementValidationRules,
+  validationError?: ?string,
   value: string,
 };
 

@@ -12,6 +12,7 @@ type Props = {
   label: string,
   shouldValidate: boolean,
   touched: boolean,
+  validationError?: ?string,
   value: string,
 };
 
@@ -53,6 +54,18 @@ const getInputElement = (
   }
 };
 
+const getValidationErrorElement = (
+  invalid: boolean,
+  touched: boolean,
+  validationError: ?string,
+) => {
+  if (invalid && touched && validationError) {
+    return <p className={styles.ValidationError}>{validationError}</p>;
+  }
+
+  return null;
+};
+
 const input = (props: Props) => {
   const {
     changed,
@@ -63,6 +76,7 @@ const input = (props: Props) => {
     label,
     shouldValidate,
     touched,
+    validationError,
     value,
   } = props;
   const inputElement = getInputElement(
@@ -74,11 +88,15 @@ const input = (props: Props) => {
     shouldValidate,
     touched,
   );
+
+  const errorElement = getValidationErrorElement(invalid, touched, validationError);
+
   return (
     <div className={styles.Input}>
       <label htmlFor={id} className={styles.Label}>
         {label}
         {inputElement}
+        {errorElement}
       </label>
     </div>
   );
@@ -87,6 +105,7 @@ const input = (props: Props) => {
 input.defaultProps = {
   changed: null,
   invalid: false,
+  validationError: null,
 };
 
 export default input;

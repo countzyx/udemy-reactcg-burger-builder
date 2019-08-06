@@ -65,6 +65,7 @@ class ContactData extends Component<Props, State> {
         validation: {
           required: true,
         },
+        validationError: null,
         value: 'test@test.com',
       },
       name: {
@@ -80,6 +81,7 @@ class ContactData extends Component<Props, State> {
         validation: {
           required: true,
         },
+        validationError: null,
         value: 'Max',
       },
       postalCode: {
@@ -97,6 +99,7 @@ class ContactData extends Component<Props, State> {
           minLength: 5,
           maxLength: 10,
         },
+        validationError: null,
         value: '41351',
       },
       streetAddress: {
@@ -112,6 +115,7 @@ class ContactData extends Component<Props, State> {
         validation: {
           required: true,
         },
+        validationError: null,
         value: '1 Test Street',
       },
     },
@@ -147,23 +151,22 @@ class ContactData extends Component<Props, State> {
       .catch(() => this.setState({ loading: false }));
   };
 
-  checkValidity = (value: string, rules: FormElementValidationRules) => {
-    let isValid = true;
+  getErrorMessage = (value: string, rules: FormElementValidationRules) => {
     const trimmedValue = value.trim();
 
-    if (rules.required) {
-      isValid = trimmedValue !== '' && isValid;
+    if (rules.required && trimmedValue === '') {
+      return 'Required';
     }
 
-    if (rules.minLength) {
-      isValid = trimmedValue.length >= rules.minLength && isValid;
+    if (rules.minLength && trimmedValue.length < rules.minLength) {
+      return `Minimum length: ${rules.minLength}`;
     }
 
-    if (rules.maxLength) {
-      isValid = trimmedValue.length <= rules.maxLength && isValid;
+    if (rules.maxLength && trimmedValue.length > rules.maxLength) {
+      return `Maximum length: ${rules.maxLength}`;
     }
 
-    return isValid;
+    return null;
   };
 
   inputChangedHandler = (event: SyntheticEvent<HTMLInputElement>, id: string) => {
@@ -176,10 +179,12 @@ class ContactData extends Component<Props, State> {
     };
 
     updatedFormElement.value = event.currentTarget.value;
-    updatedFormElement.valid = this.checkValidity(
+    updatedFormElement.validationError = this.getErrorMessage(
       updatedFormElement.value,
       updatedFormElement.validation,
     );
+    updatedFormElement.valid = !updatedFormElement.validationError;
+
     updatedFormElement.touched = true;
 
     updatedOrderForm[id] = updatedFormElement;
@@ -209,6 +214,7 @@ class ContactData extends Component<Props, State> {
           label={config.label}
           shouldValidate={config.validation !== undefined}
           touched={config.touched}
+          validationError={config.validationError}
           value={config.value}
         />
       );
