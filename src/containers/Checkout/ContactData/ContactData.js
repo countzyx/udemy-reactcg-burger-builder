@@ -193,6 +193,7 @@ class ContactData extends Component<Props, State> {
     updatedFormElement.touched = true;
 
     updatedOrderForm[id] = updatedFormElement;
+
     const formIsValid = Object.keys(updatedOrderForm).reduce<boolean>(
       (acc, k) => (updatedOrderForm[k].valid === undefined ? acc : acc && updatedOrderForm[k].valid),
       true,
