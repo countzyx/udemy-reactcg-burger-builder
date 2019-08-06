@@ -14,6 +14,7 @@ import type {
 import axios from '../../../axios-orders';
 
 type State = {
+  formIsValid: boolean,
   orderForm?: OrderForm,
   loading: boolean,
 };
@@ -36,6 +37,8 @@ class ContactData extends Component<Props, State> {
   };
 
   state = {
+    formIsValid: true,
+    loading: false,
     orderForm: {
       deliveryMethod: {
         elementType: 'select',
@@ -61,7 +64,7 @@ class ContactData extends Component<Props, State> {
         },
         label: 'Email',
         touched: false,
-        valid: false,
+        valid: true,
         validation: {
           required: true,
         },
@@ -77,7 +80,7 @@ class ContactData extends Component<Props, State> {
         },
         label: 'Name',
         touched: false,
-        valid: false,
+        valid: true,
         validation: {
           required: true,
         },
@@ -93,7 +96,7 @@ class ContactData extends Component<Props, State> {
         },
         label: 'Postal Code',
         touched: false,
-        valid: false,
+        valid: true,
         validation: {
           required: true,
           minLength: 5,
@@ -111,7 +114,7 @@ class ContactData extends Component<Props, State> {
         },
         label: 'Street Address',
         touched: false,
-        valid: false,
+        valid: true,
         validation: {
           required: true,
         },
@@ -119,7 +122,6 @@ class ContactData extends Component<Props, State> {
         value: '1 Test Street',
       },
     },
-    loading: false,
   };
 
   orderHandler = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -154,6 +156,10 @@ class ContactData extends Component<Props, State> {
   getErrorMessage = (value: string, rules: FormElementValidationRules) => {
     const trimmedValue = value.trim();
 
+    if (!rules) {
+      return null;
+    }
+
     if (rules.required && trimmedValue === '') {
       return 'Required';
     }
@@ -184,15 +190,19 @@ class ContactData extends Component<Props, State> {
       updatedFormElement.validation,
     );
     updatedFormElement.valid = !updatedFormElement.validationError;
-
     updatedFormElement.touched = true;
 
     updatedOrderForm[id] = updatedFormElement;
-    this.setState({ orderForm: updatedOrderForm });
+    const formIsValid = Object.keys(updatedOrderForm).reduce<boolean>(
+      (acc, k) => (updatedOrderForm[k].valid === undefined ? acc : acc && updatedOrderForm[k].valid),
+      true,
+    );
+
+    this.setState({ formIsValid, orderForm: updatedOrderForm });
   };
 
   render = () => {
-    const { orderForm, loading } = this.state;
+    const { formIsValid, loading, orderForm } = this.state;
     if (loading) {
       return <Spinner />;
     }
@@ -225,7 +235,9 @@ class ContactData extends Component<Props, State> {
         <h4>Enter your contact data</h4>
         <form onSubmit={this.orderHandler}>
           {formElements}
-          <Button buttonType="Success">Order</Button>
+          <Button buttonType="Success" isDisabled={!formIsValid}>
+            Order
+          </Button>
         </form>
       </div>
     );
