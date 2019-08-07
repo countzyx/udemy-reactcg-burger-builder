@@ -3,7 +3,6 @@ import * as React from 'react';
 import type { History } from 'react-router';
 import { connect } from 'react-redux';
 import type { Dispatch, ReduxProps } from 'redux';
-import queryString from 'query-string';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -66,13 +65,6 @@ class BurgerBuilder extends React.Component<Props, State> {
   //     });
   // };
 
-  // addIngredientHandler = (ingredientType: string) => {
-  //   const { totalPrice } = this.state;
-  //   const { ingredients } = this.props;
-  //   if (!ingredients) {
-  //     return;
-  //   }
-
   purchaseHandler = () => {
     this.setState({ purchasing: true });
   };
@@ -82,17 +74,8 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    const { ingredients, totalPrice } = this.props;
-
-    const ingredientSearch = queryString.stringify({
-      ingredients: JSON.stringify(ingredients),
-      totalPrice,
-    });
     const { history } = this.props;
-    history.push({
-      pathname: '/checkout',
-      search: ingredientSearch,
-    });
+    history.push('/checkout');
   };
 
   render = () => {

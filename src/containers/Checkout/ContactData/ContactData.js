@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import type { History } from 'react-router';
+import { connect } from 'react-redux';
+import type { ReduxProps } from 'redux';
 import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -8,8 +10,8 @@ import Input from '../../../components/UI/Input/Input';
 import type {
   FormElement,
   FormElementValidationRules,
-  Ingredients,
   OrderForm,
+  ReduxState,
 } from '../../../types';
 import axios from '../../../axios-orders';
 
@@ -19,23 +21,21 @@ type State = {
   loading: boolean,
 };
 
-type DefaultProps = {|
-  ingredients: ?Ingredients,
-  totalPrice: ?number,
+type OwnProps = {|
+  history: History,
 |};
 
-type Props = {
-  ingredients?: Ingredients,
-  totalPrice?: number,
-  history: History,
-};
+const mapStateToProps = (state: ReduxState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+});
+
+type Props = {|
+  ...OwnProps,
+  ...ReduxProps<typeof mapStateToProps>,
+|};
 
 class ContactData extends Component<Props, State> {
-  static defaultProps: DefaultProps = {
-    ingredients: null,
-    totalPrice: 0,
-  };
-
   state = {
     formIsValid: true,
     loading: false,
@@ -195,6 +195,7 @@ class ContactData extends Component<Props, State> {
     updatedOrderForm[id] = updatedFormElement;
 
     const formIsValid = Object.keys(updatedOrderForm).reduce<boolean>(
+      // eslint-disable-next-line max-len
       (acc, k) => (updatedOrderForm[k].valid === undefined ? acc : acc && updatedOrderForm[k].valid),
       true,
     );
@@ -245,4 +246,4 @@ class ContactData extends Component<Props, State> {
   };
 }
 
-export default ContactData;
+export default connect(mapStateToProps)(ContactData);
