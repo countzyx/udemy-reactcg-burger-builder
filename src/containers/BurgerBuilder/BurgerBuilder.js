@@ -11,7 +11,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import type { Action, Ingredients, ReduxState } from '../../types';
+import type { Action, ReduxState } from '../../types';
 import * as actionTypes from '../../store/actionTypes';
 
 type OwnProps = {|
@@ -20,6 +20,8 @@ type OwnProps = {|
 
 const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.ingredients,
+  isPurchasable: state.isPurchasable,
+  totalPrice: state.totalPrice,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
@@ -43,25 +45,14 @@ type DefaultProps = {};
 type State = {
   error: ?Error,
   loading: boolean,
-  purchaseable: boolean,
   purchasing: boolean,
-  totalPrice: number,
-};
-
-const INGREDIENT_PRICES = {
-  bacon: 1,
-  cheese: 0.5,
-  meat: 2,
-  salad: 0.5,
 };
 
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
     error: null,
     loading: false,
-    purchaseable: false,
     purchasing: false,
-    totalPrice: 4,
   };
 
   // componentDidMount = () => {
@@ -75,51 +66,12 @@ class BurgerBuilder extends React.Component<Props, State> {
   //     });
   // };
 
-  updatePurchaseState = (ingredients: Ingredients) => {
-    const sum = Object.keys(ingredients).reduce<number>(
-      (acc: number, k: string) => acc + ingredients[k],
-      0,
-    );
-    this.setState({ purchaseable: sum > 0 });
-  };
-
-  addIngredientHandler = (ingredientType: string) => {
-    const { totalPrice } = this.state;
-    const { ingredients } = this.props;
-    if (!ingredients) {
-      return;
-    }
-
-    const oldCount = ingredients[ingredientType];
-    const newCount = oldCount + 1;
-    const updatedIngredients = { ...ingredients };
-    updatedIngredients[ingredientType] = newCount;
-    const priceAddition = INGREDIENT_PRICES[ingredientType];
-    const newTotalPrice = totalPrice + priceAddition;
-    this.setState({ totalPrice: newTotalPrice });
-    this.updatePurchaseState(updatedIngredients);
-  };
-
-  removeIngredientHandler = (ingredientType: string) => {
-    const { totalPrice } = this.state;
-    const { ingredients } = this.props;
-
-    if (!ingredients) {
-      return;
-    }
-    const oldCount = ingredients[ingredientType];
-    if (oldCount <= 0) {
-      return;
-    }
-
-    const newCount = oldCount - 1;
-    const updatedIngredients = { ...ingredients };
-    updatedIngredients[ingredientType] = newCount;
-    const priceDeduction = INGREDIENT_PRICES[ingredientType];
-    const newTotalPrice = totalPrice - priceDeduction;
-    this.setState({ totalPrice: newTotalPrice });
-    this.updatePurchaseState(updatedIngredients);
-  };
+  // addIngredientHandler = (ingredientType: string) => {
+  //   const { totalPrice } = this.state;
+  //   const { ingredients } = this.props;
+  //   if (!ingredients) {
+  //     return;
+  //   }
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -130,8 +82,7 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    const { totalPrice } = this.state;
-    const { ingredients } = this.props;
+    const { ingredients, totalPrice } = this.props;
 
     const ingredientSearch = queryString.stringify({
       ingredients: JSON.stringify(ingredients),
@@ -145,10 +96,14 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   render = () => {
+    const { error, loading, purchasing } = this.state;
     const {
-      error, loading, purchaseable, purchasing, totalPrice,
-    } = this.state;
-    const { ingredients, onAddIngredient, onDeleteIngredient } = this.props;
+      ingredients,
+      isPurchasable,
+      onAddIngredient,
+      onDeleteIngredient,
+      totalPrice,
+    } = this.props;
 
     if (!ingredients) {
       if (error) {
@@ -195,7 +150,7 @@ class BurgerBuilder extends React.Component<Props, State> {
           ingredientAdded={onAddIngredient}
           ingredientRemoved={onDeleteIngredient}
           ordered={this.purchaseHandler}
-          purchaseable={purchaseable}
+          purchaseable={isPurchasable}
           totalPrice={totalPrice}
         />
       </React.Fragment>
