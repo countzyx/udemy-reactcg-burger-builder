@@ -1,4 +1,13 @@
 // @flow
+import * as actionTypes from './store/actionTypes';
+
+export type ActionPayloadIngredientName = {
+  name: string,
+};
+export type Action =
+  | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
+  | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName };
+
 export type Address = {
   street: string,
   zipCode: string,
@@ -61,4 +70,9 @@ export type OrderForm = {
   name: FormElement,
   postalCode: FormElement,
   streetAddress: FormElement,
+};
+
+export type ReduxState = {
+  +ingredients: ?Ingredients,
+  +totalPrice: number,
 };
