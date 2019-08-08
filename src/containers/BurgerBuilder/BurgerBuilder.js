@@ -11,7 +11,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Action, ReduxState } from '../../types';
-import * as actionTypes from '../../store/actionTypes';
+import * as actions from '../../store/actions';
 
 type OwnProps = {|
   history: History,
@@ -24,14 +24,9 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onAddIngredient: (ingredientName: string) => dispatch({
-    type: actionTypes.ADD_INGREDIENT,
-    payload: { name: ingredientName },
-  }),
-  onDeleteIngredient: (ingredientName: string) => dispatch({
-    type: actionTypes.DELETE_INGREDIENT,
-    payload: { name: ingredientName },
-  }),
+  onAddIngredient: (ingredientName: string) => dispatch(actions.addIngredient(ingredientName)),
+  // eslint-disable-next-line max-len
+  onDeleteIngredient: (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
 });
 
 type Props = {|

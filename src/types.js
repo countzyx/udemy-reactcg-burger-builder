@@ -1,5 +1,5 @@
 // @flow
-import * as actionTypes from './store/actionTypes';
+import * as actionTypes from './store/actions/actionTypes';
 
 export type ActionPayloadIngredientName = {
   name: string,

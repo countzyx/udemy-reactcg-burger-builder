@@ -1,7 +1,7 @@
 // @flow
 import * as _ from 'lodash';
-import * as actionTypes from './actionTypes';
-import type { Action, Ingredients, ReduxState } from '../types';
+import * as actionTypes from '../actions/actionTypes';
+import type { Action, Ingredients, ReduxState } from '../../types';
 
 const initialState: ReduxState = {
   ingredients: {
