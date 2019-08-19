@@ -25,7 +25,7 @@ export const failFetchIngredients = () => ({
 
 export const initIngredientsAsync = () => (dispatch: ReduxDispatch) => {
   axios
-    .get('/ingredients.jso')
+    .get('/ingredients.json')
     .then((response) => {
       dispatch(setIngredients(response.data));
     })
