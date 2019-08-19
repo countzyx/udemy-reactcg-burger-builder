@@ -8,16 +8,17 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import type { Action, ReduxState } from '../../types';
 import * as actions from '../../store/actions';
+import axios from '../../axios-orders';
 
 type OwnProps = {|
   history: History,
 |};
 
 const mapStateToProps = (state: ReduxState) => ({
+  error: state.error,
   ingredients: state.ingredients,
   isPurchasable: state.isPurchasable,
   totalPrice: state.totalPrice,
@@ -37,28 +38,13 @@ type Props = {|
 type DefaultProps = {};
 
 type State = {
-  error: ?Error,
-  loading: boolean,
   purchasing: boolean,
 };
 
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
-    error: null,
-    loading: false,
     purchasing: false,
   };
-
-  // componentDidMount = () => {
-  //   axios
-  //     .get('/ingredients.json')
-  //     .then((response) => {
-  //       this.setState({ ingredients: response.data });
-  //     })
-  //     .catch((error) => {
-  //       this.setState({ error });
-  //     });
-  // };
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -74,8 +60,9 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { error, loading, purchasing } = this.state;
+    const { purchasing } = this.state;
     const {
+      error,
       ingredients,
       isPurchasable,
       onAddIngredient,
@@ -104,7 +91,7 @@ class BurgerBuilder extends React.Component<Props, State> {
       {},
     );
 
-    let orderSummary = (
+    const orderSummary = (
       <OrderSummary
         ingredients={ingredients}
         purchaseCancelled={this.purchaseCancelHandler}
@@ -112,10 +99,6 @@ class BurgerBuilder extends React.Component<Props, State> {
         totalPrice={totalPrice}
       />
     );
-
-    if (loading) {
-      orderSummary = <Spinner />;
-    }
 
     return (
       <React.Fragment>

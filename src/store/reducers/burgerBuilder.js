@@ -4,12 +4,8 @@ import * as actionTypes from '../actions/actionTypes';
 import type { Action, Ingredients, ReduxState } from '../../types';
 
 const initialState: ReduxState = {
-  ingredients: {
-    bacon: 0,
-    cheese: 0,
-    meat: 0,
-    salad: 0,
-  },
+  error: false,
+  ingredients: null,
   isPurchasable: false,
   totalPrice: 4,
 };

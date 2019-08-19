@@ -73,6 +73,7 @@ export type OrderForm = {
 };
 
 export type ReduxState = {
+  +error: boolean,
   +ingredients: ?Ingredients,
   +isPurchasable: boolean,
   +totalPrice: number,
