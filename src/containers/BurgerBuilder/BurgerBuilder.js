@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onAddIngredient: (ingredientName: string) => dispatch(actions.addIngredient(ingredientName)),
   // eslint-disable-next-line max-len
   onDeleteIngredient: (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
+  onInitIngredients: () => dispatch(actions.initIngredientsAsync()),
 });
 
 type Props = {|
@@ -44,6 +45,11 @@ type State = {
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
     purchasing: false,
+  };
+
+  componentDidMount = () => {
+    const { onInitIngredients } = this.props;
+    onInitIngredients();
   };
 
   purchaseHandler = () => {

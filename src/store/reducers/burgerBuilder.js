@@ -47,6 +47,15 @@ const reducer = (state: ReduxState = initialState, action: Action): ReduxState =
       }
       break;
     }
+    case actionTypes.FETCH_INGREDIENTS_FAILED: {
+      newState.error = true;
+      break;
+    }
+    case actionTypes.SET_INGREDIENTS: {
+      newState.error = false;
+      newState.ingredients = action.payload.value;
+      break;
+    }
     default:
       return state;
   }
