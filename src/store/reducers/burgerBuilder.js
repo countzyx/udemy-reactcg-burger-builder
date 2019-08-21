@@ -1,9 +1,9 @@
 // @flow
 import * as _ from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
-import type { Action, Ingredients, ReduxState } from '../../types';
+import type { Action, Ingredients, BurgerBuilderState } from '../../types';
 
-const initialState: ReduxState = {
+const initialState: BurgerBuilderState = {
   error: false,
   ingredients: null,
   isPurchasable: false,
@@ -25,7 +25,7 @@ const checkPurchasability = (ingredients: Ingredients): boolean => {
   return sum > 0;
 };
 
-const reducer = (state: ReduxState = initialState, action: Action): ReduxState => {
+const reducer = (state: BurgerBuilderState = initialState, action: Action): BurgerBuilderState => {
   const newState = _.cloneDeep(state);
 
   switch (action.type) {

@@ -1,22 +1,12 @@
 // @flow
 import * as actionTypes from './store/actions/actionTypes';
 
-export type ActionPayloadIngredientName = {
-  name: string,
-};
-export type Action =
-  | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
-  | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName };
-
-export type Address = {
-  street: string,
-  zipCode: string,
-};
-
-export type Customer = {
-  address: Address,
+export type DeliveryData = {
+  deliveryMethod: string,
   email: string,
   name: string,
+  postalCode: string,
+  streetAddress: string,
 };
 
 export type Ingredients = {
@@ -27,9 +17,8 @@ export type Ingredients = {
 };
 
 export type BurgerOrder = {
-  customer: Customer,
-  deliveryMethod: string,
-  id: string,
+  deliveryData: DeliveryData,
+  id: ?string,
   ingredients: Ingredients,
   price: number,
 };
@@ -64,7 +53,7 @@ export type FormElement = {
   value: string,
 };
 
-export type OrderForm = {
+export type ContactForm = {
   deliveryMethod: FormElement,
   email: FormElement,
   name: FormElement,
@@ -72,9 +61,41 @@ export type OrderForm = {
   streetAddress: FormElement,
 };
 
-export type ReduxState = {
+export type BurgerBuilderState = {
   +error: boolean,
   +ingredients: ?Ingredients,
   +isPurchasable: boolean,
   +totalPrice: number,
 };
+
+export type OrdersState = {
+  loading: boolean,
+  orders: Array<BurgerOrder>,
+  purchased: boolean,
+};
+
+export type ReduxState = { burger: BurgerBuilderState, orders: OrdersState };
+
+export type ActionPayloadIngredientName = {
+  name: string,
+};
+
+export type ActionPayloadErrorValue = {
+  value: Error,
+};
+
+export type ActionPayloadIngredientsValue = {
+  value: Ingredients,
+};
+
+export type ActionPayloadOrderValue = {
+  value: BurgerOrder,
+};
+export type Action =
+  | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
+  | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName }
+  | { type: typeof actionTypes.SET_INGREDIENTS, payload: ActionPayloadIngredientsValue }
+  | { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED }
+  | { type: typeof actionTypes.PURCHASE_BURGER_FAIL, payload: ActionPayloadErrorValue }
+  | { type: typeof actionTypes.PURCHASE_BURGER_START }
+  | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue };

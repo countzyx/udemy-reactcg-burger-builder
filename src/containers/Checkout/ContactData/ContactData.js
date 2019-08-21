@@ -1,24 +1,28 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import type { History } from 'react-router';
 import { connect } from 'react-redux';
-import type { ReduxProps } from 'redux';
+import type { Dispatch, ReduxProps } from 'redux';
 import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import type {
+  Action,
+  BurgerOrder,
+  DeliveryData,
   FormElement,
   FormElementValidationRules,
-  OrderForm,
+  ContactForm,
   ReduxState,
 } from '../../../types';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../axios-orders';
+import * as actions from '../../../store/actions';
 
 type State = {
   formIsValid: boolean,
-  orderForm?: OrderForm,
-  loading: boolean,
+  orderForm?: ContactForm,
 };
 
 type OwnProps = {|
@@ -26,8 +30,13 @@ type OwnProps = {|
 |};
 
 const mapStateToProps = (state: ReduxState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
+  ingredients: state.burger.ingredients,
+  loading: state.orders.loading,
+  totalPrice: state.burger.totalPrice,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onOrderBurger: (order: BurgerOrder) => dispatch(actions.purchaseBurgerStartAsync(order)),
 });
 
 type Props = {|
@@ -35,10 +44,11 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps>,
 |};
 
-class ContactData extends Component<Props, State> {
+type DefaultProps = {};
+
+class ContactData extends React.Component<Props, State> {
   state = {
     formIsValid: true,
-    loading: false,
     orderForm: {
       deliveryMethod: {
         elementType: 'select',
@@ -126,31 +136,25 @@ class ContactData extends Component<Props, State> {
 
   orderHandler = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.setState({ loading: true });
+
     const { orderForm } = this.state;
     if (!orderForm) {
       return;
     }
 
-    const orderData = Object.keys(orderForm).reduce((acc, key) => {
+    const deliveryData: DeliveryData = Object.keys(orderForm).reduce((acc, key) => {
       acc[key] = orderForm[key].value;
       return acc;
     }, {});
 
-    const { ingredients, totalPrice, history } = this.props;
-    const order = {
+    const { ingredients, totalPrice, onOrderBurger } = this.props;
+    const order: BurgerOrder = {
+      deliveryData,
+      id: null,
       ingredients,
-      orderData,
       price: totalPrice,
     };
-
-    axios
-      .post('/orders.json', order)
-      .then(() => {
-        this.setState({ loading: false });
-        history.push('/');
-      })
-      .catch(() => this.setState({ loading: false }));
+    onOrderBurger(order);
   };
 
   getErrorMessage = (value: string, rules: FormElementValidationRules) => {
@@ -204,11 +208,12 @@ class ContactData extends Component<Props, State> {
   };
 
   render = () => {
-    const { formIsValid, loading, orderForm } = this.state;
+    const { loading } = this.props;
     if (loading) {
       return <Spinner />;
     }
 
+    const { formIsValid, orderForm } = this.state;
     if (!orderForm) {
       return <p>No order form data present.</p>;
     }
@@ -246,4 +251,7 @@ class ContactData extends Component<Props, State> {
   };
 }
 
-export default connect(mapStateToProps)(ContactData);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withErrorHandler<React.Config<Props, DefaultProps>>(ContactData, axios));

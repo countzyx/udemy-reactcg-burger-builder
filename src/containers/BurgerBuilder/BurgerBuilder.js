@@ -18,10 +18,10 @@ type OwnProps = {|
 |};
 
 const mapStateToProps = (state: ReduxState) => ({
-  error: state.error,
-  ingredients: state.ingredients,
-  isPurchasable: state.isPurchasable,
-  totalPrice: state.totalPrice,
+  error: state.burger.error,
+  ingredients: state.burger.ingredients,
+  isPurchasable: state.burger.isPurchasable,
+  totalPrice: state.burger.totalPrice,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

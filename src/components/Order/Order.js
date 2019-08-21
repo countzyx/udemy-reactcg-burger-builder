@@ -23,7 +23,6 @@ const order = (props: Props) => {
       <p>
         Ingredients:
         {ingredientsJsx}
-        {' '}
       </p>
       <p>
         Price:&nbsp;
