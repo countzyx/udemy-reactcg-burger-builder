@@ -3,11 +3,12 @@ import * as _ from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
 import type { Action, Ingredients, BurgerBuilderState } from '../../types';
 
+const INITIAL_PRICE: number = 4;
 const initialState: BurgerBuilderState = {
   error: false,
   ingredients: null,
   isPurchasable: false,
-  totalPrice: 4,
+  totalPrice: INITIAL_PRICE,
 };
 
 const INGREDIENT_PRICES = {
@@ -54,6 +55,7 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action): Burg
     case actionTypes.SET_INGREDIENTS: {
       newState.error = false;
       newState.ingredients = action.payload.value;
+      newState.totalPrice = INITIAL_PRICE;
       break;
     }
     default:
