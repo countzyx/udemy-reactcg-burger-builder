@@ -69,9 +69,10 @@ export type BurgerBuilderState = {
 };
 
 export type OrdersState = {
-  loading: boolean,
-  orders: Array<BurgerOrder>,
-  purchased: boolean,
+  +error: boolean,
+  +loading: boolean,
+  +orders: Array<BurgerOrder>,
+  +purchased: boolean,
 };
 
 export type ReduxState = { burger: BurgerBuilderState, orders: OrdersState };
@@ -91,11 +92,19 @@ export type ActionPayloadIngredientsValue = {
 export type ActionPayloadOrderValue = {
   value: BurgerOrder,
 };
+
+export type ActionPayloadOrdersValue = {
+  value: Array<BurgerOrder>,
+};
+
 export type Action =
   | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
   | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName }
   | { type: typeof actionTypes.SET_INGREDIENTS, payload: ActionPayloadIngredientsValue }
   | { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED }
+  | { type: typeof actionTypes.FETCH_ORDERS_FAIL, payload: ActionPayloadErrorValue }
+  | { type: typeof actionTypes.FETCH_ORDERS_START }
+  | { type: typeof actionTypes.FETCH_ORDERS_SUCCESS, payload: ActionPayloadOrdersValue }
   | { type: typeof actionTypes.PURCHASE_BURGER_FAIL, payload: ActionPayloadErrorValue }
   | { type: typeof actionTypes.PURCHASE_BURGER_START }
   | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue };

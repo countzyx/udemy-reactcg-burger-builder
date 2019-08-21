@@ -1,44 +1,45 @@
 // @flow
 import * as React from 'react';
 import * as _ from 'lodash';
+import { connect } from 'react-redux';
+import type { Dispatch, ReduxProps } from 'redux';
 import Order from '../../components/Order/Order';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import type { BurgerOrder } from '../../types';
+import type { Action, BurgerOrder, ReduxState } from '../../types';
+import * as actions from '../../store/actions';
 
-type Props = {};
+type OwnProps = {};
 type DefaultProps = {};
-type State = {
-  error: ?Error,
-  loading: boolean,
-  orders: ?Array<BurgerOrder>,
-};
+
+const mapStateToProps = (state: ReduxState) => ({
+  error: state.orders.error,
+  loading: state.orders.loading,
+  orders: state.orders.orders,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onInitOrders: () => dispatch(actions.fetchOrdersAsync()),
+});
+
+type Props = {|
+  ...OwnProps,
+  ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
+|};
+
+type State = {};
 
 class Orders extends React.Component<Props, State> {
-  state = {
-    error: null,
-    loading: true,
-    orders: null,
-  };
+  state = {};
 
   componentDidMount = () => {
-    axios
-      .get('orders.json')
-      .then((response) => {
-        const orders = Object.keys(response.data).map(key => ({
-          ...response.data[key],
-          id: key,
-        }));
-        this.setState({ loading: false, orders });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, error });
-      });
+    const { onInitOrders } = this.props;
+    onInitOrders();
   };
 
   render = () => {
-    const { error, loading, orders } = this.state;
+    const { error, loading, orders } = this.props;
 
     if (!orders) {
       if (error) {
@@ -77,4 +78,7 @@ class Orders extends React.Component<Props, State> {
   };
 }
 
-export default withErrorHandler<React.Config<Props, DefaultProps>>(Orders, axios);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withErrorHandler<React.Config<Props, DefaultProps>>(Orders, axios));

@@ -1,3 +1,3 @@
 // @flow
 export { addIngredient, deleteIngredient, initIngredientsAsync } from './burgerBuilder';
-export { purchaseBurgerStartAsync, purchaseInit } from './order';
+export { fetchOrdersAsync, purchaseBurgerAsync, purchaseInit } from './order';

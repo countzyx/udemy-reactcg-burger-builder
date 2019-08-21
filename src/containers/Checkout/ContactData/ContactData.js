@@ -36,7 +36,7 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onOrderBurger: (order: BurgerOrder) => dispatch(actions.purchaseBurgerStartAsync(order)),
+  onOrderBurger: (order: BurgerOrder) => dispatch(actions.purchaseBurgerAsync(order)),
 });
 
 type Props = {|
