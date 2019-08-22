@@ -10,7 +10,7 @@ import type {
   FormElementValidationRules,
   ReduxState,
 } from '../../types';
-// import * as actions from '../../store/actions';
+import * as actions from '../../store/actions';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 
@@ -18,7 +18,9 @@ type OwnProps = {||};
 
 const mapStateToProps = (state: ReduxState) => ({});
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onLogin: (email: string, password: string) => dispatch(actions.authAsync(email, password)),
+});
 
 type Props = {|
   ...OwnProps,
@@ -169,7 +171,7 @@ class Auth extends React.Component<Props, State> {
     return (
       <div className={styles.Auth}>
         <h4>Enter your contact data</h4>
-        <form onSubmit={() => {}}>
+        <form onSubmit={this.loginHandler}>
           {formElements}
           <Button buttonType="Success" isDisabled={!formIsValid}>
             Login

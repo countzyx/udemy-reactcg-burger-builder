@@ -114,4 +114,7 @@ export type Action =
   | { type: typeof actionTypes.FETCH_ORDERS_SUCCESS, payload: ActionPayloadOrdersValue }
   | { type: typeof actionTypes.PURCHASE_BURGER_FAIL, payload: ActionPayloadErrorValue }
   | { type: typeof actionTypes.PURCHASE_BURGER_START }
-  | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue };
+  | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue }
+  | { type: typeof actionTypes.AUTH_FAIL, payload: ActionPayloadErrorValue }
+  | { type: typeof actionTypes.AUTH_START }
+  | { type: typeof actionTypes.AUTH_SUCCESS };
