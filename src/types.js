@@ -37,9 +37,11 @@ export type FormElementConfig = {
 };
 
 export type FormElementValidationRules = {
-  required?: ?boolean,
-  minLength?: ?number,
+  isEmail?: boolean,
+  isNumeric?: ?number,
   maxLength?: ?number,
+  minLength?: ?number,
+  required?: boolean,
 };
 
 export type FormElement = {
@@ -59,6 +61,11 @@ export type ContactForm = {
   name: FormElement,
   postalCode: FormElement,
   streetAddress: FormElement,
+};
+
+export type AuthForm = {
+  email: FormElement,
+  password: FormElement,
 };
 
 export type BurgerBuilderState = {
