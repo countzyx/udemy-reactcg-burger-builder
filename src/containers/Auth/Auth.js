@@ -16,10 +16,12 @@ import Input from '../../components/UI/Input/Input';
 
 type OwnProps = {||};
 
+// eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state: ReduxState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onLogin: (email: string, password: string) => dispatch(actions.authAsync(email, password)),
+  onSignUp: (email: string, password: string) => dispatch(actions.signUpAsync(email, password)),
 });
 
 type Props = {|
@@ -32,6 +34,7 @@ type Props = {|
 type State = {
   authForm: AuthForm,
   formIsValid: boolean,
+  isSignUp: boolean,
 };
 
 class Auth extends React.Component<Props, State> {
@@ -73,6 +76,7 @@ class Auth extends React.Component<Props, State> {
       },
     },
     formIsValid: true,
+    isSignUp: false,
   };
 
   getErrorMessage = (value: string, rules: FormElementValidationRules) => {
@@ -134,17 +138,22 @@ class Auth extends React.Component<Props, State> {
   loginHandler = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { authForm } = this.state;
+    const { authForm, isSignUp } = this.state;
     if (!authForm) {
       return;
     }
 
-    const { onLogin } = this.props;
-    onLogin(authForm.email.value, authForm.password.value);
+    const { onLogin, onSignUp } = this.props;
+    const action = isSignUp ? onSignUp : onLogin;
+    action(authForm.email.value, authForm.password.value);
+  };
+
+  switchAuthModeHandler = () => {
+    this.setState(prevState => ({ isSignUp: !prevState.isSignUp }));
   };
 
   render = () => {
-    const { formIsValid, authForm } = this.state;
+    const { authForm, formIsValid, isSignUp } = this.state;
     if (!authForm) {
       return <p>No order form data present.</p>;
     }
@@ -174,9 +183,12 @@ class Auth extends React.Component<Props, State> {
         <form onSubmit={this.loginHandler}>
           {formElements}
           <Button buttonType="Success" isDisabled={!formIsValid}>
-            Login
+            {isSignUp ? 'Sign Up' : 'Login'}
           </Button>
         </form>
+        <Button buttonType="Danger" clicked={this.switchAuthModeHandler}>
+          {`Switch to ${isSignUp ? 'Login' : 'Signup'}`}
+        </Button>
       </div>
     );
   };
