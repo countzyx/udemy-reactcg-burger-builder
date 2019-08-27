@@ -7,6 +7,7 @@ import {
   applyMiddleware, combineReducers, compose, createStore,
 } from 'redux';
 import thunk from 'redux-thunk';
+import authReducer from './store/reducers/auth';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import ordersReducer from './store/reducers/order';
 import './index.css';
@@ -14,6 +15,7 @@ import App from './containers/App/App';
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   burger: burgerBuilderReducer,
   orders: ordersReducer,
 });

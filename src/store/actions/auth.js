@@ -35,7 +35,6 @@ export const authAsync = (email: string, password: string) => (dispatch: ReduxDi
     .post('', authData)
     .then((response) => {
       if (response.data) {
-        console.log(response.data);
         const loginData: LoginData = { ...response.data };
         dispatch(authSuccess(loginData));
       } else {
@@ -77,7 +76,6 @@ export const signUpAsync = (email: string, password: string) => (dispatch: Redux
     .post('', authData)
     .then((response) => {
       if (response.data) {
-        console.log(response.data);
         const loginData: LoginData = { ...response.data, registered: false };
         dispatch(authSuccess(loginData));
       } else {

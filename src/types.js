@@ -63,10 +63,26 @@ export type ContactForm = {
   streetAddress: FormElement,
 };
 
+export type LoginData = {|
+  idToken: string,
+  email: string,
+  refreshToken: string,
+  expiresIn?: string,
+  localId: string,
+  registered: boolean,
+|};
+
 export type AuthForm = {
   email: FormElement,
   password: FormElement,
 };
+
+export type AuthState = {|
+  +error: ?Error,
+  +loading: boolean,
+  +token: ?string,
+  +userId: ?string,
+|};
 
 export type BurgerBuilderState = {
   +error: boolean,
@@ -82,15 +98,10 @@ export type OrdersState = {
   +purchased: boolean,
 };
 
-export type ReduxState = {| +burger: BurgerBuilderState, +orders: OrdersState |};
-
-export type LoginData = {|
-  idToken: string,
-  email: string,
-  refreshToken: string,
-  expiresIn?: string,
-  localId: string,
-  registered: boolean,
+export type ReduxState = {|
+  +auth: AuthState,
+  +burger: BurgerBuilderState,
+  +orders: OrdersState,
 |};
 
 export type ActionPayloadIngredientName = {
