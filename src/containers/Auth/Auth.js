@@ -13,11 +13,15 @@ import type {
 import * as actions from '../../store/actions';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 type OwnProps = {||};
 
 // eslint-disable-next-line no-unused-vars
-const mapStateToProps = (state: ReduxState) => ({});
+const mapStateToProps = (state: ReduxState) => ({
+  error: state.auth.error,
+  loading: state.auth.loading,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onLogin: (email: string, password: string) => dispatch(actions.authAsync(email, password)),
@@ -153,9 +157,14 @@ class Auth extends React.Component<Props, State> {
   };
 
   render = () => {
+    const { error, loading } = this.props;
+    if (loading) {
+      return <Spinner />;
+    }
+
     const { authForm, formIsValid, isSignUp } = this.state;
     if (!authForm) {
-      return <p>No order form data present.</p>;
+      return <p>No order form present.</p>;
     }
 
     const formElements = Object.keys(authForm).map((key) => {
@@ -179,6 +188,7 @@ class Auth extends React.Component<Props, State> {
 
     return (
       <div className={styles.Auth}>
+        {error ? <p className={styles.Error}>{error.message}</p> : null}
         <h4>Enter your contact data</h4>
         <form onSubmit={this.loginHandler}>
           {formElements}
