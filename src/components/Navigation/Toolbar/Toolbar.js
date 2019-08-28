@@ -5,12 +5,13 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 import styles from './Toolbar.module.css';
 
-type Props = {
+type Props = {|
   drawerToggleClicked?: ?() => void,
-};
+  userAuthenticated?: boolean,
+|};
 
 const toolbar = (props: Props) => {
-  const { drawerToggleClicked } = props;
+  const { drawerToggleClicked, userAuthenticated } = props;
   return (
     <header className={styles.Toolbar}>
       <DrawerToggle clicked={drawerToggleClicked} />
@@ -18,7 +19,7 @@ const toolbar = (props: Props) => {
         <Logo />
       </div>
       <nav className={styles.DesktopOnly}>
-        <NavigationItems />
+        <NavigationItems userAuthenticated={userAuthenticated} />
       </nav>
     </header>
   );
@@ -26,6 +27,7 @@ const toolbar = (props: Props) => {
 
 toolbar.defaultProps = {
   drawerToggleClicked: null,
+  userAuthenticated: false,
 };
 
 export default toolbar;

@@ -7,6 +7,7 @@ import BurgerBuilder from '../BurgerBuilder/BurgerBuilder';
 import Checkout from '../Checkout/Checkout';
 import Orders from '../Orders/Orders';
 import Auth from '../Auth/Auth';
+import Logout from '../Auth/Logout/Logout';
 
 type Props = {};
 
@@ -17,6 +18,7 @@ class App extends Component<Props> {
       <Layout>
         <Switch>
           <Route path="/auth" component={Auth} />
+          <Route path="/logout" component={Logout} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/orders" component={Orders} />
           <Route path="/" exact component={BurgerBuilder} />

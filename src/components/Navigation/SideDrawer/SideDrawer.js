@@ -5,13 +5,14 @@ import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import styles from './SideDrawer.module.css';
 
-type Props = {
+type Props = {|
   closed?: () => void,
   isOpen: boolean,
-};
+  userAuthenticated?: boolean,
+|};
 
 const sideDrawer = (props: Props) => {
-  const { closed, isOpen } = props;
+  const { closed, isOpen, userAuthenticated } = props;
   let attachedClasses = [styles.SideDrawer, styles.Close];
   if (isOpen) {
     attachedClasses = [styles.SideDrawer, styles.Open];
@@ -24,7 +25,7 @@ const sideDrawer = (props: Props) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems userAuthenticated={userAuthenticated} />
         </nav>
       </div>
     </React.Fragment>
@@ -33,6 +34,7 @@ const sideDrawer = (props: Props) => {
 
 sideDrawer.defaultProps = {
   closed: () => {},
+  userAuthenticated: false,
 };
 
 export default sideDrawer;
