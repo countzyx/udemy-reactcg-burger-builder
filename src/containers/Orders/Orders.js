@@ -17,10 +17,11 @@ const mapStateToProps = (state: ReduxState) => ({
   error: state.orders.error,
   loading: state.orders.loading,
   orders: state.orders.orders,
+  token: state.auth.token,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onInitOrders: () => dispatch(actions.fetchOrdersAsync()),
+  onInitOrders: token => dispatch(actions.fetchOrdersAsync(token)),
 });
 
 type Props = {|
@@ -34,8 +35,8 @@ class Orders extends React.Component<Props, State> {
   state = {};
 
   componentDidMount = () => {
-    const { onInitOrders } = this.props;
-    onInitOrders();
+    const { token, onInitOrders } = this.props;
+    onInitOrders(token);
   };
 
   render = () => {

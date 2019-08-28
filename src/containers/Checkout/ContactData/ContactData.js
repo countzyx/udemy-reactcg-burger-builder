@@ -32,11 +32,13 @@ type OwnProps = {|
 const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burger.ingredients,
   loading: state.orders.loading,
+  token: state.auth.token,
   totalPrice: state.burger.totalPrice,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onOrderBurger: (order: BurgerOrder) => dispatch(actions.purchaseBurgerAsync(order)),
+  // eslint-disable-next-line max-len
+  onOrderBurger: (order: BurgerOrder, token: string) => dispatch(actions.purchaseBurgerAsync(order, token)),
 });
 
 type Props = {|
@@ -148,14 +150,16 @@ class ContactData extends React.Component<Props, State> {
       return acc;
     }, {});
 
-    const { ingredients, totalPrice, onOrderBurger } = this.props;
+    const {
+      ingredients, token, totalPrice, onOrderBurger,
+    } = this.props;
     const order: BurgerOrder = {
       deliveryData,
       id: null,
       ingredients,
       price: totalPrice,
     };
-    onOrderBurger(order);
+    onOrderBurger(order, token);
   };
 
   getErrorMessage = (value: string, rules: FormElementValidationRules) => {

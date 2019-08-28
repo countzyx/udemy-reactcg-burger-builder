@@ -22,10 +22,10 @@ export const fetchOrdersSuccess = (orders: Array<BurgerOrder>) => ({
   },
 });
 
-export const fetchOrdersAsync = () => (dispatch: ReduxDispatch) => {
+export const fetchOrdersAsync = (token: string) => (dispatch: ReduxDispatch) => {
   dispatch(fetchOrdersStart());
   axios
-    .get('orders.json')
+    .get(`orders.json?auth=${token}`)
     .then((response) => {
       const orders = Object.keys(response.data).map(key => ({
         ...response.data[key],
@@ -59,10 +59,12 @@ export const purchaseBurgerStart = () => ({
   type: actionTypes.PURCHASE_BURGER_START,
 });
 
-export const purchaseBurgerAsync = (order: BurgerOrder) => (dispatch: ReduxDispatch) => {
+export const purchaseBurgerAsync = (order: BurgerOrder, token: string) => (
+  dispatch: ReduxDispatch,
+) => {
   dispatch(purchaseBurgerStart());
   axios
-    .post('/orders.json', order)
+    .post(`orders.json?auth=${token}`, order)
     .then((response) => {
       const id = response.data && response.data.name;
       dispatch(purchaseBurgerSuccess(id, order));
