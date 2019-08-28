@@ -22,7 +22,7 @@ const reducer = (state: AuthState = initialState, action: Action) => {
       break;
     }
     case actionTypes.AUTH_LOGOUT: {
-      newState.idToken = null;
+      newState.token = null;
       newState.userId = null;
       break;
     }
