@@ -5,6 +5,16 @@ import axiossignup from '../../axios-signup';
 import * as actionTypes from './actionTypes';
 import type { Action, LoginData } from '../../types';
 
+export const logout = () => ({
+  type: actionTypes.AUTH_LOGOUT,
+});
+
+export const checkAuthTimeoutAsync = (expirationTime: string) => (dispatch: ReduxDispatch) => {
+  setTimeout(() => {
+    dispatch(logout());
+  }, +expirationTime);
+};
+
 export const authFail = (error: Error): Action => ({
   type: actionTypes.AUTH_FAIL,
   payload: {
@@ -37,6 +47,7 @@ export const authAsync = (email: string, password: string) => (dispatch: ReduxDi
       if (response.data) {
         const loginData: LoginData = { ...response.data };
         dispatch(authSuccess(loginData));
+        dispatch(checkAuthTimeoutAsync(loginData.expiresIn));
       } else {
         dispatch(authFail(Error('Login failed')));
       }
@@ -77,12 +88,13 @@ export const signUpAsync = (email: string, password: string) => (dispatch: Redux
     .then((response) => {
       if (response.data) {
         const loginData: LoginData = { ...response.data, registered: false };
-        dispatch(authSuccess(loginData));
+        dispatch(signUpSuccess(loginData));
+        dispatch(checkAuthTimeoutAsync(loginData.expiresIn));
       } else {
-        dispatch(authFail(Error('Login failed')));
+        dispatch(signUpFail(Error('Login failed')));
       }
     })
     .catch((error) => {
-      dispatch(authFail(error));
+      dispatch(signUpFail(error));
     });
 };

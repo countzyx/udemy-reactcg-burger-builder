@@ -67,9 +67,9 @@ export type LoginData = {|
   idToken: string,
   email: string,
   refreshToken: string,
-  expiresIn?: string,
+  expiresIn: string,
   localId: string,
-  registered: boolean,
+  registered?: boolean,
 |};
 
 export type AuthForm = {
@@ -140,6 +140,7 @@ export type Action =
   | { type: typeof actionTypes.PURCHASE_BURGER_START }
   | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue }
   | { type: typeof actionTypes.AUTH_FAIL, payload: ActionPayloadErrorValue }
+  | { type: typeof actionTypes.AUTH_LOGOUT }
   | { type: typeof actionTypes.AUTH_START }
   | { type: typeof actionTypes.AUTH_SUCCESS, payload: ActionPayloadLoginDataValue }
   | { type: typeof actionTypes.SIGNUP_FAIL, payload: ActionPayloadErrorValue }

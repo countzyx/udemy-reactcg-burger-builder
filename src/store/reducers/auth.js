@@ -21,6 +21,11 @@ const reducer = (state: AuthState = initialState, action: Action) => {
       newState.loading = false;
       break;
     }
+    case actionTypes.AUTH_LOGOUT: {
+      newState.idToken = null;
+      newState.userId = null;
+      break;
+    }
     case actionTypes.AUTH_START:
     case actionTypes.SIGNUP_START: {
       newState.error = null;
