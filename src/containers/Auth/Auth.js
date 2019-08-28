@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import type { Dispatch, ReduxProps } from 'redux';
 import * as styles from './Auth.module.css';
@@ -21,6 +22,7 @@ type OwnProps = {||};
 const mapStateToProps = (state: ReduxState) => ({
   error: state.auth.error,
   loading: state.auth.loading,
+  userAuthenticated: state.auth.token !== null,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
@@ -157,7 +159,11 @@ class Auth extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { error, loading } = this.props;
+    const { error, loading, userAuthenticated } = this.props;
+    if (userAuthenticated) {
+      return <Redirect to="/" />;
+    }
+
     if (loading) {
       return <Spinner />;
     }

@@ -10,6 +10,7 @@ type Props = {
   ordered?: () => void,
   purchaseable: boolean,
   totalPrice: number,
+  userAuthenticated?: boolean,
 };
 
 const controls = [
@@ -27,6 +28,7 @@ const buildControls = (props: Props) => {
     ordered,
     purchaseable,
     totalPrice,
+    userAuthenticated,
   } = props;
 
   return (
@@ -52,7 +54,7 @@ const buildControls = (props: Props) => {
         onClick={ordered}
         type="button"
       >
-        ORDER NOW
+        {userAuthenticated ? 'ORDER NOW' : 'LOGIN TO ORDER'}
       </button>
     </div>
   );
@@ -62,6 +64,7 @@ buildControls.defaultProps = {
   ingredientAdded: null,
   ingredientRemoved: null,
   ordered: null,
+  userAuthenticated: false,
 };
 
 export default buildControls;

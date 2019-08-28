@@ -22,6 +22,7 @@ const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burger.ingredients,
   isPurchasable: state.burger.isPurchasable,
   totalPrice: state.burger.totalPrice,
+  userAuthenticated: state.auth.token !== null,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
@@ -54,6 +55,10 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseHandler = () => {
+    const { history, userAuthenticated } = this.props;
+    if (!userAuthenticated) {
+      history.push('/auth');
+    }
     this.setState({ purchasing: true });
   };
 
@@ -76,6 +81,7 @@ class BurgerBuilder extends React.Component<Props, State> {
       onAddIngredient,
       onDeleteIngredient,
       totalPrice,
+      userAuthenticated,
     } = this.props;
 
     if (!ingredients) {
@@ -121,6 +127,7 @@ class BurgerBuilder extends React.Component<Props, State> {
           ordered={this.purchaseHandler}
           purchaseable={isPurchasable}
           totalPrice={totalPrice}
+          userAuthenticated={userAuthenticated}
         />
       </React.Fragment>
     );
