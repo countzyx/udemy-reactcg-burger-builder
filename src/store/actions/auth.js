@@ -12,7 +12,7 @@ export const logout = () => ({
 export const checkAuthTimeoutAsync = (expirationTime: string) => (dispatch: ReduxDispatch) => {
   setTimeout(() => {
     dispatch(logout());
-  }, +expirationTime);
+  }, +expirationTime * 1000);
 };
 
 export const authFail = (error: Error): Action => ({
