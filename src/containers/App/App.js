@@ -1,6 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import type { Dispatch, ReduxProps } from 'redux';
+import type { Action } from '../../types';
+import * as actions from '../../store/actions';
 import styles from './App.module.css';
 import Layout from '../../hoc/Layout/Layout';
 import BurgerBuilder from '../BurgerBuilder/BurgerBuilder';
@@ -9,10 +13,28 @@ import Orders from '../Orders/Orders';
 import Auth from '../Auth/Auth';
 import Logout from '../Auth/Logout/Logout';
 
-type Props = {};
+type OwnProps = {||};
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onAuthFromLocalStore: () => dispatch(actions.authFromLocalStoreAsync()),
+});
+
+type Props = {|
+  ...OwnProps,
+  ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
+|};
+
+type State = {};
 
 // eslint-disable-next-line react/prefer-stateless-function
-class App extends Component<Props> {
+class App extends Component<Props, State> {
+  componentDidMount = () => {
+    const { onAuthFromLocalStore } = this.props;
+    onAuthFromLocalStore();
+  };
+
   render = () => (
     <div className={styles.App}>
       <Layout>
@@ -28,4 +50,7 @@ class App extends Component<Props> {
   );
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);
