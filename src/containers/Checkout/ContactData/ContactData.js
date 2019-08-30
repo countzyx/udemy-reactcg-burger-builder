@@ -34,6 +34,7 @@ const mapStateToProps = (state: ReduxState) => ({
   loading: state.orders.loading,
   token: state.auth.token,
   totalPrice: state.burger.totalPrice,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
@@ -151,13 +152,14 @@ class ContactData extends React.Component<Props, State> {
     }, {});
 
     const {
-      ingredients, token, totalPrice, onOrderBurger,
+      ingredients, token, totalPrice, userId, onOrderBurger,
     } = this.props;
     const order: BurgerOrder = {
       deliveryData,
       id: null,
       ingredients,
       price: totalPrice,
+      userId,
     };
     onOrderBurger(order, token);
   };

@@ -21,6 +21,7 @@ export type BurgerOrder = {
   id: ?string,
   ingredients: Ingredients,
   price: number,
+  userId: string,
 };
 
 export type ButtonType = 'Success' | 'Danger';

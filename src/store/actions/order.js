@@ -22,10 +22,10 @@ export const fetchOrdersSuccess = (orders: Array<BurgerOrder>) => ({
   },
 });
 
-export const fetchOrdersAsync = (token: string) => (dispatch: ReduxDispatch) => {
+export const fetchOrdersAsync = (token: string, userId: string) => (dispatch: ReduxDispatch) => {
   dispatch(fetchOrdersStart());
   axios
-    .get(`orders.json?auth=${token}`)
+    .get(`orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`)
     .then((response) => {
       const orders = Object.keys(response.data).map(key => ({
         ...response.data[key],
