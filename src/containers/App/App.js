@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import type { Dispatch, ReduxProps } from 'redux';
-import type { Action } from '../../types';
+import type { Action, ReduxState } from '../../types';
 import * as actions from '../../store/actions';
 import styles from './App.module.css';
 import Layout from '../../hoc/Layout/Layout';
@@ -15,7 +15,9 @@ import Logout from '../Auth/Logout/Logout';
 
 type OwnProps = {||};
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state: ReduxState) => ({
+  userAuthenticated: state.auth.token != null,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onAuthFromLocalStore: () => dispatch(actions.authFromLocalStoreAsync()),
@@ -35,19 +37,23 @@ class App extends Component<Props, State> {
     onAuthFromLocalStore();
   };
 
-  render = () => (
-    <div className={styles.App}>
-      <Layout>
-        <Switch>
-          <Route path="/auth" component={Auth} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/orders" component={Orders} />
-          <Route path="/" exact component={BurgerBuilder} />
-        </Switch>
-      </Layout>
-    </div>
-  );
+  render = () => {
+    const { userAuthenticated } = this.props;
+    return (
+      <div className={styles.App}>
+        <Layout>
+          <Switch>
+            {!userAuthenticated ? <Route path="/auth" component={Auth} /> : null}
+            {userAuthenticated ? <Route path="/logout" component={Logout} /> : null}
+            {userAuthenticated ? <Route path="/checkout" component={Checkout} /> : null}
+            {userAuthenticated ? <Route path="/orders" component={Orders} /> : null}
+            <Route path="/" exact component={BurgerBuilder} />
+            <Redirect to="/" />
+          </Switch>
+        </Layout>
+      </div>
+    );
+  };
 }
 
 export default connect(
