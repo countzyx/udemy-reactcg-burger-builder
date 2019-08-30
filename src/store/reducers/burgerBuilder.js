@@ -5,6 +5,7 @@ import type { Action, Ingredients, BurgerBuilderState } from '../../types';
 
 const INITIAL_PRICE: number = 4;
 const initialState: BurgerBuilderState = {
+  building: false,
   error: false,
   ingredients: null,
   isPurchasable: false,
@@ -33,6 +34,7 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action): Burg
     case actionTypes.ADD_INGREDIENT: {
       //      console.log(actionTypes.ADD_INGREDIENT, action);
       const ingredientName = action.payload.name;
+      newState.building = true;
       newState.ingredients[ingredientName] += 1;
       newState.isPurchasable = true;
       newState.totalPrice += INGREDIENT_PRICES[ingredientName];
@@ -45,7 +47,9 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action): Burg
         newState.ingredients[ingredientName] -= 1;
         newState.totalPrice -= INGREDIENT_PRICES[ingredientName];
         newState.isPurchasable = checkPurchasability(newState.ingredients);
+        newState.building = newState.totalPrice > INITIAL_PRICE;
       }
+
       break;
     }
     case actionTypes.FETCH_INGREDIENTS_FAILED: {
@@ -53,6 +57,7 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action): Burg
       break;
     }
     case actionTypes.SET_INGREDIENTS: {
+      newState.building = false;
       newState.error = false;
       newState.ingredients = action.payload.value;
       newState.totalPrice = INITIAL_PRICE;

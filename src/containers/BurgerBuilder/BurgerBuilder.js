@@ -31,6 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onDeleteIngredient: (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
   onInitIngredients: () => dispatch(actions.initIngredientsAsync()),
   onInitPurchase: () => dispatch(actions.purchaseInit()),
+  onSetAuthRedirectPath: (path: string) => dispatch(actions.setAuthRedirectPath(path)),
 });
 
 type Props = {|
@@ -55,8 +56,9 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseHandler = () => {
-    const { history, userAuthenticated } = this.props;
+    const { history, userAuthenticated, onSetAuthRedirectPath } = this.props;
     if (!userAuthenticated) {
+      onSetAuthRedirectPath('/checkout');
       history.push('/auth');
     }
     this.setState({ purchasing: true });

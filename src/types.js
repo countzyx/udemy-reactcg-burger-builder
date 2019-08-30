@@ -80,23 +80,25 @@ export type AuthForm = {
 export type AuthState = {|
   +error: ?Error,
   +loading: boolean,
+  +redirectPath: string,
   +token: ?string,
   +userId: ?string,
 |};
 
-export type BurgerBuilderState = {
+export type BurgerBuilderState = {|
+  +building: boolean,
   +error: boolean,
   +ingredients: ?Ingredients,
   +isPurchasable: boolean,
   +totalPrice: number,
-};
+|};
 
-export type OrdersState = {
+export type OrdersState = {|
   +error: boolean,
   +loading: boolean,
   +orders: Array<BurgerOrder>,
   +purchased: boolean,
-};
+|};
 
 export type ReduxState = {|
   +auth: AuthState,
@@ -128,6 +130,10 @@ export type ActionPayloadOrdersValue = {
   value: Array<BurgerOrder>,
 };
 
+export type ActionPayloadStringValue = {
+  value: string,
+};
+
 export type Action =
   | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
   | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName }
@@ -143,6 +149,7 @@ export type Action =
   | { type: typeof actionTypes.AUTH_LOGOUT }
   | { type: typeof actionTypes.AUTH_START }
   | { type: typeof actionTypes.AUTH_SUCCESS, payload: ActionPayloadLoginDataValue }
+  | { type: typeof actionTypes.SET_AUTH_REDIRECT_PATH, payload: ActionPayloadStringValue }
   | { type: typeof actionTypes.SIGNUP_FAIL, payload: ActionPayloadErrorValue }
   | { type: typeof actionTypes.SIGNUP_START }
   | { type: typeof actionTypes.SIGNUP_SUCCESS, payload: ActionPayloadLoginDataValue };

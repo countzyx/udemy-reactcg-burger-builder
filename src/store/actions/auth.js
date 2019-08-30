@@ -57,6 +57,13 @@ export const authAsync = (email: string, password: string) => (dispatch: ReduxDi
     });
 };
 
+export const setAuthRedirectPath = (path: string) => ({
+  type: actionTypes.SET_AUTH_REDIRECT_PATH,
+  payload: {
+    value: path,
+  },
+});
+
 export const signUpFail = (error: Error): Action => ({
   type: actionTypes.SIGNUP_FAIL,
   payload: {

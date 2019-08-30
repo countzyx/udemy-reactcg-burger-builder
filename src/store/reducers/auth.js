@@ -6,6 +6,7 @@ import type { Action, AuthState, LoginData } from '../../types';
 const initialState: AuthState = {
   error: null,
   loading: false,
+  redirectPath: '/',
   token: null,
   userId: null,
 };
@@ -39,6 +40,10 @@ const reducer = (state: AuthState = initialState, action: Action) => {
       newState.loading = false;
       newState.token = loginData.idToken;
       newState.userId = loginData.localId;
+      break;
+    }
+    case actionTypes.SET_AUTH_REDIRECT_PATH: {
+      newState.redirectPath = action.payload.value;
       break;
     }
     default: {

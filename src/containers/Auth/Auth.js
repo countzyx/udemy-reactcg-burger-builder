@@ -20,13 +20,16 @@ type OwnProps = {||};
 
 // eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state: ReduxState) => ({
+  building: state.burger.building,
   error: state.auth.error,
   loading: state.auth.loading,
+  redirectPath: state.auth.redirectPath,
   userAuthenticated: state.auth.token !== null,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onLogin: (email: string, password: string) => dispatch(actions.authAsync(email, password)),
+  onSetAuthRedirectPath: (path: string) => dispatch(actions.setAuthRedirectPath(path)),
   onSignUp: (email: string, password: string) => dispatch(actions.signUpAsync(email, password)),
 });
 
@@ -83,6 +86,13 @@ class Auth extends React.Component<Props, State> {
     },
     formIsValid: true,
     isSignUp: false,
+  };
+
+  componentDidMount = () => {
+    const { building, redirectPath, onSetAuthRedirectPath } = this.props;
+    if (!building && redirectPath !== '/') {
+      onSetAuthRedirectPath('/');
+    }
   };
 
   getErrorMessage = (value: string, rules: FormElementValidationRules) => {
@@ -159,9 +169,11 @@ class Auth extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { error, loading, userAuthenticated } = this.props;
+    const {
+      error, loading, redirectPath, userAuthenticated,
+    } = this.props;
     if (userAuthenticated) {
-      return <Redirect to="/" />;
+      return <Redirect to={redirectPath} />;
     }
 
     if (loading) {
