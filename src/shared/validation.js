@@ -1,6 +1,7 @@
 // @flow
 import type { FormElementValidationRules } from '../types';
 
+// eslint-disable-next-line import/prefer-default-export
 export const getErrorMessage = (value: string, rules: FormElementValidationRules) => {
   const trimmedValue = value.trim();
 
