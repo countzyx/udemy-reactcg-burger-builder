@@ -45,7 +45,7 @@ type State = {
   purchasing: boolean,
 };
 
-class BurgerBuilder extends React.Component<Props, State> {
+export class BurgerBuilder extends React.Component<Props, State> {
   state = {
     purchasing: false,
   };
