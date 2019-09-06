@@ -6,7 +6,7 @@ import * as burger from './burgerBuilder';
 import * as order from './order';
 import * as actionTypes from '../actions/actionTypes';
 
-export function* watchAuth(): Saga<void> {
+export function* watchSagas(): Saga<void> {
   yield takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, auth.checkAuthTimeoutSaga);
   yield takeEvery(actionTypes.AUTH_START, auth.authUserSaga);
   yield takeEvery(actionTypes.AUTH_USER_FROM_LOCALSTORE, auth.authUserFromLocalStorageSaga);
@@ -17,4 +17,4 @@ export function* watchAuth(): Saga<void> {
   yield takeEvery(actionTypes.PURCHASE_BURGER_START, order.purchaseBurgerSaga);
 }
 
-export default watchAuth;
+export default watchSagas;
