@@ -1,6 +1,6 @@
 // @flow
 export { addIngredient, deleteIngredient, fetchIngredientsStart } from './burgerBuilder';
-export { fetchOrdersAsync, purchaseBurgerAsync, purchaseInit } from './order';
+export { fetchOrdersStart, purchaseBurgerStart, purchaseInit } from './order';
 export {
   authStart,
   authUserFromLocalStore,

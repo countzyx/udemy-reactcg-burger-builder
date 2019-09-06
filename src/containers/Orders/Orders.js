@@ -23,7 +23,7 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   // eslint-disable-next-line max-len
-  onInitOrders: (token: string, userId: string) => dispatch(actions.fetchOrdersAsync(token, userId)),
+  onInitOrders: (token: string, userId: string) => dispatch(actions.fetchOrdersStart(token, userId)),
 });
 
 type Props = {|

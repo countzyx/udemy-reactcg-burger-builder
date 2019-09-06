@@ -136,12 +136,22 @@ export type PayloadOrderValue = {
   value: BurgerOrder,
 };
 
+export type PayloadOrderAndToken = {
+  order: BurgerOrder,
+  token: string,
+};
+
 export type PayloadOrdersValue = {
   value: Array<BurgerOrder>,
 };
 
 export type PayloadStringValue = {
   value: string,
+};
+
+export type PayloadTokenAndId = {
+  token: string,
+  userId: string,
 };
 
 export type ActionAddIngredient = {
@@ -162,7 +172,10 @@ export type ActionFetchOrdersFail = {
   type: typeof actionTypes.FETCH_ORDERS_FAIL,
   payload: PayloadErrorValue,
 };
-export type ActionFetchOrdersStart = { type: typeof actionTypes.FETCH_ORDERS_START };
+export type ActionFetchOrdersStart = {
+  type: typeof actionTypes.FETCH_ORDERS_START,
+  payload: PayloadTokenAndId,
+};
 export type ActionFetchOrdersSuccess = {
   type: typeof actionTypes.FETCH_ORDERS_SUCCESS,
   payload: PayloadOrdersValue,
@@ -171,7 +184,10 @@ export type ActionPurchaseBurgerFail = {
   type: typeof actionTypes.PURCHASE_BURGER_FAIL,
   payload: PayloadErrorValue,
 };
-export type ActionPurchaseBurgerStart = { type: typeof actionTypes.PURCHASE_BURGER_START };
+export type ActionPurchaseBurgerStart = {
+  type: typeof actionTypes.PURCHASE_BURGER_START,
+  payload: PayloadOrderAndToken,
+};
 export type ActionPurchaseBurgerSuccess = {
   type: typeof actionTypes.PURCHASE_BURGER_SUCCESS,
   payload: PayloadOrderValue,

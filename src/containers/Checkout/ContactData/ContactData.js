@@ -39,7 +39,7 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   // eslint-disable-next-line max-len
-  onOrderBurger: (order: BurgerOrder, token: string) => dispatch(actions.purchaseBurgerAsync(order, token)),
+  onOrderBurger: (order: BurgerOrder, token: string) => dispatch(actions.purchaseBurgerStart(order, token)),
 });
 
 type Props = {|
