@@ -1,35 +1,28 @@
 // @flow
-import type { ReduxDispatch } from 'redux';
-import axios from '../../axios-orders';
 import * as actionTypes from './actionTypes';
-import type { Ingredients } from '../../types';
+import * as types from '../../types';
 
-export const addIngredient = (ingredientName: string) => ({
+export const addIngredient = (ingredientName: string): types.ActionAddIngredient => ({
   type: actionTypes.ADD_INGREDIENT,
   payload: { name: ingredientName },
 });
 
-export const deleteIngredient = (ingredientName: string) => ({
+export const deleteIngredient = (ingredientName: string): types.ActionDeleteIngredient => ({
   type: actionTypes.DELETE_INGREDIENT,
   payload: { name: ingredientName },
 });
 
-export const setIngredients = (ingredients: Ingredients) => ({
-  type: actionTypes.SET_INGREDIENTS,
+export const fetchIngredientsFail = (): types.ActionFetchIngredientsFail => ({
+  type: actionTypes.FETCH_INGREDIENTS_FAIL,
+});
+
+export const fetchIngredientsStart = (): types.ActionFetchIngredientsStart => ({
+  type: actionTypes.FETCH_INGREDIENTS_START,
+});
+
+export const fetchIngredientsSuccess = (
+  ingredients: types.Ingredients,
+): types.ActionFetchIngredientsSuccess => ({
+  type: actionTypes.FETCH_INGREDIENTS_SUCCESS,
   payload: { value: ingredients },
 });
-
-export const failFetchIngredients = () => ({
-  type: actionTypes.FETCH_INGREDIENTS_FAILED,
-});
-
-export const initIngredientsAsync = () => (dispatch: ReduxDispatch) => {
-  axios
-    .get('/ingredients.json')
-    .then((response) => {
-      dispatch(setIngredients(response.data));
-    })
-    .catch(() => {
-      dispatch(failFetchIngredients());
-    });
-};

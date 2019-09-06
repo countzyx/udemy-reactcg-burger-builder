@@ -152,11 +152,12 @@ export type ActionDeleteIngredient = {
   type: typeof actionTypes.DELETE_INGREDIENT,
   payload: PayloadIngredientName,
 };
-export type ActionSetIngredients = {
-  type: typeof actionTypes.SET_INGREDIENTS,
+export type ActionFetchIngredientsFail = { type: typeof actionTypes.FETCH_INGREDIENTS_FAIL };
+export type ActionFetchIngredientsStart = { type: typeof actionTypes.FETCH_INGREDIENTS_START };
+export type ActionFetchIngredientsSuccess = {
+  type: typeof actionTypes.FETCH_INGREDIENTS_SUCCESS,
   payload: PayloadIngredientsValue,
 };
-export type ActionFetchIngredientsFailed = { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED };
 export type ActionFetchOrdersFail = {
   type: typeof actionTypes.FETCH_ORDERS_FAIL,
   payload: PayloadErrorValue,
@@ -214,8 +215,9 @@ export type ActionAuthUserFromLocalStore = { type: typeof actionTypes.AUTH_USER_
 export type Action =
   | ActionAddIngredient
   | ActionDeleteIngredient
-  | ActionSetIngredients
-  | ActionFetchIngredientsFailed
+  | ActionFetchIngredientsFail
+  | ActionFetchIngredientsStart
+  | ActionFetchIngredientsSuccess
   | ActionFetchOrdersFail
   | ActionFetchOrdersStart
   | ActionFetchOrdersSuccess

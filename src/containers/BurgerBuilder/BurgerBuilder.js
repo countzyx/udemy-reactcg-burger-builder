@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onAddIngredient: (ingredientName: string) => dispatch(actions.addIngredient(ingredientName)),
   // eslint-disable-next-line max-len
   onDeleteIngredient: (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
-  onInitIngredients: () => dispatch(actions.initIngredientsAsync()),
+  onInitIngredients: () => dispatch(actions.fetchIngredientsStart()),
   onInitPurchase: () => dispatch(actions.purchaseInit()),
   onSetAuthRedirectPath: (path: string) => dispatch(actions.setAuthRedirectPath(path)),
 });

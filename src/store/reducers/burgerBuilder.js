@@ -52,11 +52,11 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action): Burg
 
       break;
     }
-    case actionTypes.FETCH_INGREDIENTS_FAILED: {
+    case actionTypes.FETCH_INGREDIENTS_FAIL: {
       newState.error = true;
       break;
     }
-    case actionTypes.SET_INGREDIENTS: {
+    case actionTypes.FETCH_INGREDIENTS_SUCCESS: {
       newState.building = false;
       newState.error = false;
       newState.ingredients = action.payload.value;
