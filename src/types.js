@@ -178,7 +178,7 @@ export type ActionAuthFail = {
   type: typeof actionTypes.AUTH_FAIL,
   payload: ActionPayloadErrorValue,
 };
-export type ActionAUthLogoutStart = { type: typeof actionTypes.AUTH_LOGOUT_START };
+export type ActionAuthLogoutStart = { type: typeof actionTypes.AUTH_LOGOUT_START };
 export type ActionAuthLogoutSuccess = { type: typeof actionTypes.AUTH_LOGOUT_SUCCESS };
 export type ActionAuthStart = { type: typeof actionTypes.AUTH_START };
 export type ActionAuthSuccess = {
@@ -212,7 +212,7 @@ export type Action =
   | ActionPurchaseBurgerSuccess
   | ActionAuthCheckTimeout
   | ActionAuthFail
-  | ActionAUthLogoutStart
+  | ActionAuthLogoutStart
   | ActionAuthLogoutSuccess
   | ActionAuthStart
   | ActionAuthSuccess
