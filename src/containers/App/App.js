@@ -7,6 +7,7 @@ import type { Action, ReduxState } from '../../types';
 import * as actions from '../../store/actions';
 import styles from './App.module.css';
 import Layout from '../../hoc/Layout/Layout';
+// eslint-disable-next-line import/no-named-as-default
 import BurgerBuilder from '../BurgerBuilder/BurgerBuilder';
 import Auth from '../Auth/Auth';
 import Logout from '../Auth/Logout/Logout';
@@ -21,7 +22,7 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onAuthFromLocalStore: () => dispatch(actions.authFromLocalStoreAsync()),
+  onAuthFromLocalStore: () => dispatch(actions.authUserFromLocalStore()),
 });
 
 type Props = {|

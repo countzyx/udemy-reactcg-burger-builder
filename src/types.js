@@ -107,97 +107,109 @@ export type ReduxState = {|
   +orders: OrdersState,
 |};
 
-export type ActionPayloadIngredientName = {
+export type PayloadIngredientName = {
   name: string,
 };
 
-export type ActionPayloadErrorValue = {
+export type PayloadEmailAndPassword = {
+  email: string,
+  password: string,
+};
+
+export type PayloadErrorValue = {
   value: Error,
 };
 
-export type ActionPayloadIngredientsValue = {
+export type PayloadIngredientsValue = {
   value: Ingredients,
 };
 
-export type ActionPayloadLoginDataValue = {
+export type PayloadLoginDataValue = {
   value: LoginData,
 };
 
-export type ActionPayloadNumberValue = {
+export type PayloadNumberValue = {
   value: number,
 };
 
-export type ActionPayloadOrderValue = {
+export type PayloadOrderValue = {
   value: BurgerOrder,
 };
 
-export type ActionPayloadOrdersValue = {
+export type PayloadOrdersValue = {
   value: Array<BurgerOrder>,
 };
 
-export type ActionPayloadStringValue = {
+export type PayloadStringValue = {
   value: string,
 };
 
 export type ActionAddIngredient = {
   type: typeof actionTypes.ADD_INGREDIENT,
-  payload: ActionPayloadIngredientName,
+  payload: PayloadIngredientName,
 };
 export type ActionDeleteIngredient = {
   type: typeof actionTypes.DELETE_INGREDIENT,
-  payload: ActionPayloadIngredientName,
+  payload: PayloadIngredientName,
 };
 export type ActionSetIngredients = {
   type: typeof actionTypes.SET_INGREDIENTS,
-  payload: ActionPayloadIngredientsValue,
+  payload: PayloadIngredientsValue,
 };
 export type ActionFetchIngredientsFailed = { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED };
 export type ActionFetchOrdersFail = {
   type: typeof actionTypes.FETCH_ORDERS_FAIL,
-  payload: ActionPayloadErrorValue,
+  payload: PayloadErrorValue,
 };
 export type ActionFetchOrdersStart = { type: typeof actionTypes.FETCH_ORDERS_START };
 export type ActionFetchOrdersSuccess = {
   type: typeof actionTypes.FETCH_ORDERS_SUCCESS,
-  payload: ActionPayloadOrdersValue,
+  payload: PayloadOrdersValue,
 };
 export type ActionPurchaseBurgerFail = {
   type: typeof actionTypes.PURCHASE_BURGER_FAIL,
-  payload: ActionPayloadErrorValue,
+  payload: PayloadErrorValue,
 };
 export type ActionPurchaseBurgerStart = { type: typeof actionTypes.PURCHASE_BURGER_START };
 export type ActionPurchaseBurgerSuccess = {
   type: typeof actionTypes.PURCHASE_BURGER_SUCCESS,
-  payload: ActionPayloadOrderValue,
+  payload: PayloadOrderValue,
 };
 export type ActionAuthCheckTimeout = {
   type: typeof actionTypes.AUTH_CHECK_TIMEOUT,
-  payload: ActionPayloadNumberValue,
+  payload: PayloadNumberValue,
 };
 export type ActionAuthFail = {
   type: typeof actionTypes.AUTH_FAIL,
-  payload: ActionPayloadErrorValue,
+  payload: PayloadErrorValue,
 };
 export type ActionAuthLogoutStart = { type: typeof actionTypes.AUTH_LOGOUT_START };
 export type ActionAuthLogoutSuccess = { type: typeof actionTypes.AUTH_LOGOUT_SUCCESS };
-export type ActionAuthStart = { type: typeof actionTypes.AUTH_START };
+export type ActionAuthStart = {
+  type: typeof actionTypes.AUTH_START,
+  payload: PayloadEmailAndPassword,
+};
 export type ActionAuthSuccess = {
   type: typeof actionTypes.AUTH_SUCCESS,
-  payload: ActionPayloadLoginDataValue,
+  payload: PayloadLoginDataValue,
 };
 export type ActionAuthRedirectPath = {
   type: typeof actionTypes.SET_AUTH_REDIRECT_PATH,
-  payload: ActionPayloadStringValue,
+  payload: PayloadStringValue,
 };
 export type ActionSignupFail = {
   type: typeof actionTypes.SIGNUP_FAIL,
-  payload: ActionPayloadErrorValue,
+  payload: PayloadErrorValue,
 };
-export type ActionSignupStart = { type: typeof actionTypes.SIGNUP_START };
+export type ActionSignupStart = {
+  type: typeof actionTypes.SIGNUP_START,
+  payload: PayloadEmailAndPassword,
+};
 export type ActionSignupSuccess = {
   type: typeof actionTypes.SIGNUP_SUCCESS,
-  payload: ActionPayloadLoginDataValue,
+  payload: PayloadLoginDataValue,
 };
+export type ActionAuthUserFromLocalStore = { type: typeof actionTypes.AUTH_USER_FROM_LOCALSTORE };
 
 export type Action =
   | ActionAddIngredient
@@ -217,6 +229,7 @@ export type Action =
   | ActionAuthStart
   | ActionAuthSuccess
   | ActionAuthRedirectPath
+  | ActionAuthUserFromLocalStore
   | ActionSignupFail
   | ActionSignupStart
   | ActionSignupSuccess;

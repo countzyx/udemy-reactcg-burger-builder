@@ -25,9 +25,9 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onLogin: (email: string, password: string) => dispatch(actions.authAsync(email, password)),
+  onLogin: (email: string, password: string) => dispatch(actions.authStart(email, password)),
   onSetAuthRedirectPath: (path: string) => dispatch(actions.setAuthRedirectPath(path)),
-  onSignUp: (email: string, password: string) => dispatch(actions.signUpAsync(email, password)),
+  onSignUp: (email: string, password: string) => dispatch(actions.signUpStart(email, password)),
 });
 
 type Props = {|
