@@ -123,6 +123,10 @@ export type ActionPayloadLoginDataValue = {
   value: LoginData,
 };
 
+export type ActionPayloadNumberValue = {
+  value: number,
+};
+
 export type ActionPayloadOrderValue = {
   value: BurgerOrder,
 };
@@ -135,22 +139,84 @@ export type ActionPayloadStringValue = {
   value: string,
 };
 
+export type ActionAddIngredient = {
+  type: typeof actionTypes.ADD_INGREDIENT,
+  payload: ActionPayloadIngredientName,
+};
+export type ActionDeleteIngredient = {
+  type: typeof actionTypes.DELETE_INGREDIENT,
+  payload: ActionPayloadIngredientName,
+};
+export type ActionSetIngredients = {
+  type: typeof actionTypes.SET_INGREDIENTS,
+  payload: ActionPayloadIngredientsValue,
+};
+export type ActionFetchIngredientsFailed = { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED };
+export type ActionFetchOrdersFail = {
+  type: typeof actionTypes.FETCH_ORDERS_FAIL,
+  payload: ActionPayloadErrorValue,
+};
+export type ActionFetchOrdersStart = { type: typeof actionTypes.FETCH_ORDERS_START };
+export type ActionFetchOrdersSuccess = {
+  type: typeof actionTypes.FETCH_ORDERS_SUCCESS,
+  payload: ActionPayloadOrdersValue,
+};
+export type ActionPurchaseBurgerFail = {
+  type: typeof actionTypes.PURCHASE_BURGER_FAIL,
+  payload: ActionPayloadErrorValue,
+};
+export type ActionPurchaseBurgerStart = { type: typeof actionTypes.PURCHASE_BURGER_START };
+export type ActionPurchaseBurgerSuccess = {
+  type: typeof actionTypes.PURCHASE_BURGER_SUCCESS,
+  payload: ActionPayloadOrderValue,
+};
+export type ActionAuthCheckTimeout = {
+  type: typeof actionTypes.AUTH_CHECK_TIMEOUT,
+  payload: ActionPayloadNumberValue,
+};
+export type ActionAuthFail = {
+  type: typeof actionTypes.AUTH_FAIL,
+  payload: ActionPayloadErrorValue,
+};
+export type ActionAUthLogoutStart = { type: typeof actionTypes.AUTH_LOGOUT_START };
+export type ActionAuthLogoutSuccess = { type: typeof actionTypes.AUTH_LOGOUT_SUCCESS };
+export type ActionAuthStart = { type: typeof actionTypes.AUTH_START };
+export type ActionAuthSuccess = {
+  type: typeof actionTypes.AUTH_SUCCESS,
+  payload: ActionPayloadLoginDataValue,
+};
+export type ActionAuthRedirectPath = {
+  type: typeof actionTypes.SET_AUTH_REDIRECT_PATH,
+  payload: ActionPayloadStringValue,
+};
+export type ActionSignupFail = {
+  type: typeof actionTypes.SIGNUP_FAIL,
+  payload: ActionPayloadErrorValue,
+};
+export type ActionSignupStart = { type: typeof actionTypes.SIGNUP_START };
+export type ActionSignupSuccess = {
+  type: typeof actionTypes.SIGNUP_SUCCESS,
+  payload: ActionPayloadLoginDataValue,
+};
+
 export type Action =
-  | { type: typeof actionTypes.ADD_INGREDIENT, payload: ActionPayloadIngredientName }
-  | { type: typeof actionTypes.DELETE_INGREDIENT, payload: ActionPayloadIngredientName }
-  | { type: typeof actionTypes.SET_INGREDIENTS, payload: ActionPayloadIngredientsValue }
-  | { type: typeof actionTypes.FETCH_INGREDIENTS_FAILED }
-  | { type: typeof actionTypes.FETCH_ORDERS_FAIL, payload: ActionPayloadErrorValue }
-  | { type: typeof actionTypes.FETCH_ORDERS_START }
-  | { type: typeof actionTypes.FETCH_ORDERS_SUCCESS, payload: ActionPayloadOrdersValue }
-  | { type: typeof actionTypes.PURCHASE_BURGER_FAIL, payload: ActionPayloadErrorValue }
-  | { type: typeof actionTypes.PURCHASE_BURGER_START }
-  | { type: typeof actionTypes.PURCHASE_BURGER_SUCCESS, payload: ActionPayloadOrderValue }
-  | { type: typeof actionTypes.AUTH_FAIL, payload: ActionPayloadErrorValue }
-  | { type: typeof actionTypes.AUTH_LOGOUT }
-  | { type: typeof actionTypes.AUTH_START }
-  | { type: typeof actionTypes.AUTH_SUCCESS, payload: ActionPayloadLoginDataValue }
-  | { type: typeof actionTypes.SET_AUTH_REDIRECT_PATH, payload: ActionPayloadStringValue }
-  | { type: typeof actionTypes.SIGNUP_FAIL, payload: ActionPayloadErrorValue }
-  | { type: typeof actionTypes.SIGNUP_START }
-  | { type: typeof actionTypes.SIGNUP_SUCCESS, payload: ActionPayloadLoginDataValue };
+  | ActionAddIngredient
+  | ActionDeleteIngredient
+  | ActionSetIngredients
+  | ActionFetchIngredientsFailed
+  | ActionFetchOrdersFail
+  | ActionFetchOrdersStart
+  | ActionFetchOrdersSuccess
+  | ActionPurchaseBurgerFail
+  | ActionPurchaseBurgerStart
+  | ActionPurchaseBurgerSuccess
+  | ActionAuthCheckTimeout
+  | ActionAuthFail
+  | ActionAUthLogoutStart
+  | ActionAuthLogoutSuccess
+  | ActionAuthStart
+  | ActionAuthSuccess
+  | ActionAuthRedirectPath
+  | ActionSignupFail
+  | ActionSignupStart
+  | ActionSignupSuccess;

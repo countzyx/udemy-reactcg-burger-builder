@@ -4,7 +4,7 @@ export { fetchOrdersAsync, purchaseBurgerAsync, purchaseInit } from './order';
 export {
   authAsync,
   authFromLocalStoreAsync,
-  logout,
+  logoutStart,
   setAuthRedirectPath,
   signUpAsync,
 } from './auth';

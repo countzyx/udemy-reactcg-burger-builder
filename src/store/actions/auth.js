@@ -5,19 +5,20 @@ import axiossignup from '../../axios-signup';
 import * as actionTypes from './actionTypes';
 import type { Action, LoginData } from '../../types';
 
-export const logout = () => {
-  localStorage.removeItem('loginData');
-  localStorage.removeItem('expirationDate');
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
+export const logoutStart = () => ({
+  type: actionTypes.AUTH_LOGOUT_START,
+});
 
-export const checkAuthTimeoutAsync = (expirationTime: number) => (dispatch: ReduxDispatch) => {
-  setTimeout(() => {
-    dispatch(logout());
-  }, expirationTime * 1000);
-};
+export const logoutSuccess = () => ({
+  type: actionTypes.AUTH_LOGOUT_SUCCESS,
+});
+
+export const checkAuthTimeoutAsync = (expirationTime: number) => ({
+  type: actionTypes.AUTH_CHECK_TIMEOUT,
+  payload: {
+    value: expirationTime,
+  },
+});
 
 export const authFail = (error: Error): Action => ({
   type: actionTypes.AUTH_FAIL,
@@ -82,7 +83,7 @@ export const authFromLocalStoreAsync = () => (dispatch: ReduxDispatch) => {
     }
   }
 
-  dispatch(logout());
+  dispatch(logoutStart());
 };
 
 export const setAuthRedirectPath = (path: string) => ({

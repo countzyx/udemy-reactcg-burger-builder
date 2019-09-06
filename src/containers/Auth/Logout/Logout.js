@@ -11,7 +11,7 @@ type OwnProps = {||};
 const mapStateToProps = null;
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onLogout: () => dispatch(actions.logout()),
+  onLogout: () => dispatch(actions.logoutStart()),
 });
 
 type Props = {|
