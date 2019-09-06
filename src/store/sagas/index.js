@@ -9,6 +9,7 @@ export function* watchAuth(): Saga<void> {
   yield takeEvery(actionTypes.AUTH_START, auth.authUserSaga);
   yield takeEvery(actionTypes.AUTH_USER_FROM_LOCALSTORE, auth.authUserFromLocalStorageSaga);
   yield takeEvery(actionTypes.AUTH_LOGOUT_START, auth.logoutSaga);
+  yield takeEvery(actionTypes.SIGNUP_START, auth.authUserSignupSaga);
 }
 
 export default watchAuth;
