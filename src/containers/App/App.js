@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import type { Dispatch, ReduxProps } from 'redux';
@@ -30,35 +30,31 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
 |};
 
-type State = {};
+const App = (props: Props) => {
+  const { onAuthFromLocalStore, userAuthenticated } = props;
 
-// eslint-disable-next-line react/prefer-stateless-function
-class App extends Component<Props, State> {
-  componentDidMount = () => {
-    const { onAuthFromLocalStore } = this.props;
+  useEffect(() => {
     onAuthFromLocalStore();
-  };
+    // eslint-disable-next-line
+  }, []);
 
-  render = () => {
-    const { userAuthenticated } = this.props;
-    return (
-      <div className={styles.App}>
-        <Layout>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              {!userAuthenticated ? <Route path="/auth" component={Auth} /> : null}
-              {userAuthenticated ? <Route path="/logout" component={Logout} /> : null}
-              {userAuthenticated ? <Route path="/checkout" component={Checkout} /> : null}
-              {userAuthenticated ? <Route path="/orders" component={Orders} /> : null}
-              <Route path="/" exact component={BurgerBuilder} />
-              <Redirect to="/" />
-            </Switch>
-          </Suspense>
-        </Layout>
-      </div>
-    );
-  };
-}
+  return (
+    <div className={styles.App}>
+      <Layout>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            {!userAuthenticated ? <Route path="/auth" component={Auth} /> : null}
+            {userAuthenticated ? <Route path="/logout" component={Logout} /> : null}
+            {userAuthenticated ? <Route path="/checkout" component={Checkout} /> : null}
+            {userAuthenticated ? <Route path="/orders" component={Orders} /> : null}
+            <Route path="/" exact component={BurgerBuilder} />
+            <Redirect to="/" />
+          </Switch>
+        </Suspense>
+      </Layout>
+    </div>
+  );
+};
 
 export default connect(
   mapStateToProps,
