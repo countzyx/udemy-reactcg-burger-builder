@@ -1,61 +1,49 @@
 // @flow
 import * as React from 'react';
 import type { History } from 'react-router';
-import { connect } from 'react-redux';
-import type { Dispatch, ReduxProps } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import type { Action, ReduxState } from '../../types';
 import * as actions from '../../store/actions';
 import axios from '../../axios-orders';
 
-type OwnProps = {|
-  history: History,
-|};
-
-const mapStateToProps = (state: ReduxState) => ({
-  error: state.burger.error,
-  ingredients: state.burger.ingredients,
-  isPurchasable: state.burger.isPurchasable,
-  totalPrice: state.burger.totalPrice,
-  userAuthenticated: state.auth.token !== null,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onAddIngredient: (ingredientName: string) => dispatch(actions.addIngredient(ingredientName)),
-  // eslint-disable-next-line max-len
-  onDeleteIngredient: (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
-  onInitIngredients: () => dispatch(actions.fetchIngredientsStart()),
-  onInitPurchase: () => dispatch(actions.purchaseInit()),
-  onSetAuthRedirectPath: (path: string) => dispatch(actions.setAuthRedirectPath(path)),
-});
-
 type Props = {|
-  ...OwnProps,
-  ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
+  history: History,
 |};
 
 type DefaultProps = {};
 
 export const BurgerBuilder = (props: Props) => {
   const [purchasingState, setPurchasingState] = React.useState(false);
-  const {
-    error,
-    history,
-    ingredients,
-    isPurchasable,
-    onAddIngredient,
-    onDeleteIngredient,
-    onInitIngredients,
-    onInitPurchase,
-    onSetAuthRedirectPath,
-    totalPrice,
-    userAuthenticated,
-  } = props;
+  const { history } = props;
+
+  const dispatch = useDispatch();
+  const onAddIngredient = React.useCallback(
+    (ingredientName: string) => dispatch(actions.addIngredient(ingredientName)),
+    [dispatch],
+  );
+  const onDeleteIngredient = React.useCallback(
+    (ingredientName: string) => dispatch(actions.deleteIngredient(ingredientName)),
+    [dispatch],
+  );
+  const onInitIngredients = React.useCallback(() => dispatch(actions.fetchIngredientsStart()), [
+    dispatch,
+  ]);
+  const onInitPurchase = React.useCallback(() => dispatch(actions.purchaseInit()), [dispatch]);
+  const onSetAuthRedirectPath = React.useCallback(
+    (path: string) => dispatch(actions.setAuthRedirectPath(path)),
+    [dispatch],
+  );
+
+  const error = useSelector(state => state.burger.error);
+  const ingredients = useSelector(state => state.burger.ingredients);
+  const isPurchasable = useSelector(state => state.burger.isPurchasable);
+  const totalPrice = useSelector(state => state.burger.totalPrice);
+  const userAuthenticated = useSelector(state => state.auth.token !== null);
 
   React.useEffect(() => {
     onInitIngredients();
@@ -127,7 +115,4 @@ export const BurgerBuilder = (props: Props) => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withErrorHandler<React.Config<Props, DefaultProps>>(BurgerBuilder, axios));
+export default withErrorHandler<React.Config<Props, DefaultProps>>(BurgerBuilder, axios);
