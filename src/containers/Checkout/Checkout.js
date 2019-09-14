@@ -23,28 +23,29 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps>,
 |};
 
-const checkout = (props: Props) => {
-  const { ingredients, match, purchased } = props;
+const Checkout = (props: Props) => {
+  const {
+    history, ingredients, match, purchased,
+  } = props;
+
+  const cancelCheckoutHandler = React.useCallback(() => {
+    history.goBack();
+  }, [history]);
+
+  const continueCheckoutHander = React.useCallback(() => {
+    history.replace('/checkout/contact-data');
+  }, [history]);
+
   if (purchased) {
     return <Redirect to="/" />;
   }
-
-  const checkoutCancelledHandler = () => {
-    const { history } = props;
-    history.goBack();
-  };
-
-  const checkoutContinuedHander = () => {
-    const { history } = props;
-    history.replace('/checkout/contact-data');
-  };
 
   const checkoutSummary = ingredients ? (
     <div>
       <CheckoutSummary
         ingredients={ingredients}
-        checkoutCancelled={checkoutCancelledHandler}
-        checkoutContinued={checkoutContinuedHander}
+        checkoutCancelled={cancelCheckoutHandler}
+        checkoutContinued={continueCheckoutHander}
       />
       <Route path={`${match.path}/contact-data`} component={ContactData} />
     </div>
@@ -54,4 +55,4 @@ const checkout = (props: Props) => {
   return checkoutSummary;
 };
 
-export default connect(mapStateToProps)(checkout);
+export default connect(mapStateToProps)(Checkout);
