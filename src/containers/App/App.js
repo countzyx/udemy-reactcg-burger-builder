@@ -35,8 +35,7 @@ const App = (props: Props) => {
 
   useEffect(() => {
     onAuthFromLocalStore();
-    // eslint-disable-next-line
-  }, []);
+  }, [onAuthFromLocalStore]);
 
   return (
     <div className={styles.App}>

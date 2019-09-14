@@ -31,55 +31,50 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
 |};
 
-type State = {};
+const Orders = (props: Props) => {
+  const {
+    error, loading, orders, token, userId, onInitOrders,
+  } = props;
 
-class Orders extends React.Component<Props, State> {
-  state = {};
-
-  componentDidMount = () => {
-    const { token, userId, onInitOrders } = this.props;
+  React.useEffect(() => {
     onInitOrders(token, userId);
-  };
+  }, [onInitOrders, token, userId]);
 
-  render = () => {
-    const { error, loading, orders } = this.props;
-
-    if (!orders) {
-      if (error) {
-        return (
-          <p>
-            Application Error:
-            {error.toString()}
-          </p>
-        );
-      }
-
-      if (loading) {
-        return <Spinner />;
-      }
-
-      return <p>No orders found.</p>;
+  if (!orders) {
+    if (error) {
+      return (
+        <p>
+          Application Error:
+          {error.toString()}
+        </p>
+      );
     }
 
-    return (
-      <div>
-        {orders
-          ? orders.map((order: BurgerOrder) => {
-            const orderId = order.id ? order.id : _.uniqueId();
-            return (
-              <Order
-                key={orderId}
-                ingredients={order.ingredients}
-                orderId={orderId}
-                price={order.price}
-              />
-            );
-          })
-          : null}
-      </div>
-    );
-  };
-}
+    if (loading) {
+      return <Spinner />;
+    }
+
+    return <p>No orders found.</p>;
+  }
+
+  return (
+    <div>
+      {orders
+        ? orders.map((order: BurgerOrder) => {
+          const orderId = order.id ? order.id : _.uniqueId();
+          return (
+            <Order
+              key={orderId}
+              ingredients={order.ingredients}
+              orderId={orderId}
+              price={order.price}
+            />
+          );
+        })
+        : null}
+    </div>
+  );
+};
 
 export default connect(
   mapStateToProps,
