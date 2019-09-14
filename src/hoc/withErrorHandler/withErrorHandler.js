@@ -7,10 +7,10 @@ const withErrorHandler = <Config>(
   WrappedComponent: React.AbstractComponent<Config>,
   axios: AxiosInstance,
 ): React.AbstractComponent<Config> => (props: Config) => {
-    const [error, setError] = React.useState(null);
+    const [errorState, setErrorState] = React.useState(null);
     React.useEffect(() => {
       const requestInterceptor = axios.interceptors.request.use((request) => {
-        setError(null);
+        setErrorState(null);
         return request;
       });
 
@@ -22,8 +22,8 @@ const withErrorHandler = <Config>(
     React.useEffect(() => {
       const responseInterceptor = axios.interceptors.response.use(
         response => response,
-        (err) => {
-          setError(err);
+        (error) => {
+          setErrorState(error);
         },
       );
 
@@ -33,13 +33,13 @@ const withErrorHandler = <Config>(
     }, []);
 
     const errorConfirmedHandler = () => {
-      setError(null);
+      setErrorState(null);
     };
 
     return (
       <React.Fragment>
-        <Modal show={error != null} modalClosed={errorConfirmedHandler}>
-          {error ? error.message : null}
+        <Modal show={errorState != null} modalClosed={errorConfirmedHandler}>
+          {errorState ? errorState.message : null}
         </Modal>
         <WrappedComponent {...props} />
       </React.Fragment>
