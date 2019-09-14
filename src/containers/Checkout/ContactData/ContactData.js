@@ -139,6 +139,9 @@ const initialFormState: State = {
 
 const ContactData = (props: Props) => {
   const [formState, setFormState] = React.useState(initialFormState);
+  const {
+    ingredients, loading, token, totalPrice, userId, onOrderBurger,
+  } = props;
 
   const orderHandler = React.useCallback(
     (event: SyntheticEvent<HTMLFormElement>) => {
@@ -154,9 +157,6 @@ const ContactData = (props: Props) => {
         return acc;
       }, {});
 
-      const {
-        ingredients, token, totalPrice, userId, onOrderBurger,
-      } = props;
       const order: BurgerOrder = {
         deliveryData,
         id: null,
@@ -166,7 +166,7 @@ const ContactData = (props: Props) => {
       };
       onOrderBurger(order, token);
     },
-    [formState, props],
+    [formState, ingredients, onOrderBurger, token, totalPrice, userId],
   );
 
   const inputChangedHandler = React.useCallback(
@@ -200,7 +200,6 @@ const ContactData = (props: Props) => {
     [formState, setFormState],
   );
 
-  const { loading } = props;
   if (loading) {
     return <Spinner />;
   }
