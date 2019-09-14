@@ -19,16 +19,15 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
 |};
 
-type State = {};
+const Logout = (props: Props) => {
+  const { onLogout } = props;
 
-class Logout extends React.Component<Props, State> {
-  componentDidMount = () => {
-    const { onLogout } = this.props;
+  React.useEffect(() => {
     onLogout();
-  };
+  }, [onLogout]);
 
-  render = () => <Redirect to="/" />;
-}
+  return <Redirect to="/" />;
+};
 
 export default connect(
   mapStateToProps,
