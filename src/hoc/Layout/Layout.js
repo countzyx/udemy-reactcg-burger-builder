@@ -11,7 +11,6 @@ type OwnProps = {|
   children?: React.Node,
 |};
 
-// eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state: ReduxState) => ({
   userAuthenticated: state.auth.token !== null,
 });
@@ -23,47 +22,38 @@ type Props = {|
   ...ReduxProps<typeof mapStateToProps, typeof mapDispatchToProps>,
 |};
 
-type State = {
-  showSideDrawer: boolean,
+const Layout = (props: Props) => {
+  const [showSideDrawerState, setShowSideDrawerState] = React.useState(false);
+
+  const closeSideDrawerHandler = React.useCallback(() => {
+    setShowSideDrawerState(false);
+  }, [setShowSideDrawerState]);
+
+  const toggleSideDrawerHandler = React.useCallback(() => {
+    setShowSideDrawerState(previousState => !previousState);
+  }, [setShowSideDrawerState]);
+
+  const { children, userAuthenticated } = props;
+
+  return (
+    <React.Fragment>
+      <Toolbar
+        drawerToggleClicked={toggleSideDrawerHandler}
+        userAuthenticated={userAuthenticated}
+      />
+      <SideDrawer
+        closed={closeSideDrawerHandler}
+        isOpen={showSideDrawerState}
+        userAuthenticated={userAuthenticated}
+      />
+      <main className={styles.Content}>{children}</main>
+    </React.Fragment>
+  );
 };
 
-class Layout extends React.Component<Props, State> {
-  static defaultProps = {
-    children: null,
-  };
-
-  state = {
-    showSideDrawer: false,
-  };
-
-  sideDrawerClosedHandler = () => {
-    this.setState({ showSideDrawer: false });
-  };
-
-  sideDrawerToggleHandler = () => {
-    this.setState(previousState => ({ showSideDrawer: !previousState.showSideDrawer }));
-  };
-
-  render = () => {
-    const { children, userAuthenticated } = this.props;
-    const { showSideDrawer } = this.state;
-
-    return (
-      <React.Fragment>
-        <Toolbar
-          drawerToggleClicked={this.sideDrawerToggleHandler}
-          userAuthenticated={userAuthenticated}
-        />
-        <SideDrawer
-          closed={this.sideDrawerClosedHandler}
-          isOpen={showSideDrawer}
-          userAuthenticated={userAuthenticated}
-        />
-        <main className={styles.Content}>{children}</main>
-      </React.Fragment>
-    );
-  };
-}
+Layout.defaultProps = {
+  children: null,
+};
 
 export default connect(
   mapStateToProps,
