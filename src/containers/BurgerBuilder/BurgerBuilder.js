@@ -41,100 +41,91 @@ type Props = {|
 
 type DefaultProps = {};
 
-type State = {
-  purchasing: boolean,
-};
+export const BurgerBuilder = (props: Props) => {
+  const [purchasingState, setPurchasingState] = React.useState(false);
+  const {
+    error,
+    history,
+    ingredients,
+    isPurchasable,
+    onAddIngredient,
+    onDeleteIngredient,
+    onInitIngredients,
+    onInitPurchase,
+    onSetAuthRedirectPath,
+    totalPrice,
+    userAuthenticated,
+  } = props;
 
-export class BurgerBuilder extends React.Component<Props, State> {
-  state = {
-    purchasing: false,
-  };
-
-  componentDidMount = () => {
-    const { onInitIngredients } = this.props;
+  React.useEffect(() => {
     onInitIngredients();
-  };
+  }, [onInitIngredients]);
 
-  purchaseHandler = () => {
-    const { history, userAuthenticated, onSetAuthRedirectPath } = this.props;
+  const purchaseHandler = React.useCallback(() => {
     if (!userAuthenticated) {
       onSetAuthRedirectPath('/checkout');
       history.push('/auth');
     }
-    this.setState({ purchasing: true });
-  };
+    setPurchasingState(true);
+  }, [history, onSetAuthRedirectPath, setPurchasingState, userAuthenticated]);
 
-  purchaseCancelHandler = () => {
-    this.setState({ purchasing: false });
-  };
+  const cancelPurchaseHandler = React.useCallback(() => {
+    setPurchasingState(false);
+  }, [setPurchasingState]);
 
-  purchaseContinueHandler = () => {
-    const { history, onInitPurchase } = this.props;
+  const continuePurchaseHandler = React.useCallback(() => {
     onInitPurchase();
     history.push('/checkout');
-  };
+  }, [history, onInitPurchase]);
 
-  render = () => {
-    const { purchasing } = this.state;
-    const {
-      error,
-      ingredients,
-      isPurchasable,
-      onAddIngredient,
-      onDeleteIngredient,
-      totalPrice,
-      userAuthenticated,
-    } = this.props;
-
-    if (!ingredients) {
-      if (error) {
-        return (
-          <p>
-            Application Error:
-            {error.toString()}
-          </p>
-        );
-      }
-      return <Spinner />;
+  if (!ingredients) {
+    if (error) {
+      return (
+        <p>
+          Application Error:
+          {error.toString()}
+        </p>
+      );
     }
+    return <Spinner />;
+  }
 
-    // Do I really needed a copy of this? Isn't this already a copy?
-    const disableRemoveIngredient = Object.entries(ingredients).reduce(
-      (obj: { [k: string]: boolean }, [k: string, v: number]): { [k: string]: boolean } => ({
-        ...obj,
-        [k]: typeof v === 'number' && v <= 0,
-      }),
-      {},
-    );
+  // Do I really needed a copy of this? Isn't this already a copy?
+  const disableRemoveIngredient = Object.entries(ingredients).reduce(
+    (obj: { [k: string]: boolean }, [k: string, v: number]): { [k: string]: boolean } => ({
+      ...obj,
+      [k]: typeof v === 'number' && v <= 0,
+    }),
+    {},
+  );
 
-    const orderSummary = (
-      <OrderSummary
-        ingredients={ingredients}
-        purchaseCancelled={this.purchaseCancelHandler}
-        purchaseContinued={this.purchaseContinueHandler}
+  const orderSummary = (
+    <OrderSummary
+      ingredients={ingredients}
+      purchaseCancelled={cancelPurchaseHandler}
+      purchaseContinued={continuePurchaseHandler}
+      totalPrice={totalPrice}
+    />
+  );
+
+  return (
+    <React.Fragment>
+      <Modal show={purchasingState} modalClosed={cancelPurchaseHandler}>
+        {orderSummary}
+      </Modal>
+      <Burger ingredients={ingredients} />
+      <BuildControls
+        disableRemoveIngredient={disableRemoveIngredient}
+        ingredientAdded={onAddIngredient}
+        ingredientRemoved={onDeleteIngredient}
+        ordered={purchaseHandler}
+        purchaseable={isPurchasable}
         totalPrice={totalPrice}
+        userAuthenticated={userAuthenticated}
       />
-    );
-
-    return (
-      <React.Fragment>
-        <Modal show={purchasing} modalClosed={this.purchaseCancelHandler}>
-          {orderSummary}
-        </Modal>
-        <Burger ingredients={ingredients} />
-        <BuildControls
-          disableRemoveIngredient={disableRemoveIngredient}
-          ingredientAdded={onAddIngredient}
-          ingredientRemoved={onDeleteIngredient}
-          ordered={this.purchaseHandler}
-          purchaseable={isPurchasable}
-          totalPrice={totalPrice}
-          userAuthenticated={userAuthenticated}
-        />
-      </React.Fragment>
-    );
-  };
-}
+    </React.Fragment>
+  );
+};
 
 export default connect(
   mapStateToProps,
